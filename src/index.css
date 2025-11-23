@@ -1,0 +1,59 @@
+﻿html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #000;
+}
+
+.reveal {
+  height: 100%;
+  background-color: #fdf0d5 !important; /* light beige background */
+  color: #003049 !important; /* dark navy text */
+}
+
+.reveal h1.title {
+  color: white !important;
+}
+
+/* Make sure headings and text inherit consistent color */
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6,
+.reveal p,
+.reveal li,
+.reveal span,
+.reveal div {
+  color: #003049 !important;
+}
+
+/* Ensure links use text color unless otherwise styled */
+.reveal a {
+  color: #003049 !important;
+}
+
+/* (Optional) remove Reveal default shadow on slides */
+.reveal .slides section {
+  box-shadow: none !important;
+}
+
+.reveal .box {
+  background-color: transparent !important;
+  box-shadow: none !important; /* removes the subtle shadow Bulma adds */
+  border: none !important; /* removes border */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
