@@ -1,0 +1,33 @@
+.lwe-equation-line {
+  opacity: 0;
+  transform: translateY(8px);
+  font-size: 1.8rem;
+}
+
+.lwe-token-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lwe-token {
+  position: absolute;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+/* tweak these to line up visually with your sources */
+#token-a1 {
+  left: 24%;
+  top: 34%;
+}
+
+#token-s {
+  left: 24%;
+  top: 47%;
+}
+
+#token-e1 {
+  left: 24%;
+  top: 60%;
+}

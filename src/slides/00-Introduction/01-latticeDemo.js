@@ -1,13 +1,11 @@
 ﻿import React, { useEffect, useRef, useState } from "react";
 import DraggablePanel from "../components/DraggablePanel";
-import { animate } from "animejs";
+import { BlockMath } from "react-katex";
+import "katex/dist/katex.min.css";
 import * as d3 from "d3";
 
 const POINT_RANGE = 10;
 const SCALE = 160;
-
-const HEADER_WIDTH = 360; // was 420
-const HEADER_HEIGHT = 110; // was 120
 
 const COLORS = {
   defaultPoint: "#222",
@@ -135,6 +133,8 @@ function createLatticeEngine(containerEl, options) {
   const {
     onBasisText,
     onCvpText,
+    onPointSelected,
+    onBackgroundClick, // NEW
     initialShowShortest = true,
     initialCvpEnabled = false,
     initialCvpRadiusFactor = 0.6,
@@ -574,11 +574,36 @@ function createLatticeEngine(containerEl, options) {
   const resizeHandler = () => layoutStatic(false);
   window.addEventListener("resize", resizeHandler);
 
+  // Click on SVG -> CVP target
   svg.on("click", (event) => {
+    // If user clicks empty background: notify React
+    if (onBackgroundClick) {
+      onBackgroundClick();
+    }
+
+    // CVP behaviour stays as before
     if (!cvpEnabled) return;
     const [x, y] = d3.pointer(event, svg.node());
     cvpTarget = { x, y };
     updateCVPVisualization(true, 600);
+  });
+
+  // NEW: click on individual lattice points to report decomposition
+  circles.on("click", (event, d) => {
+    event.stopPropagation(); // don't trigger the SVG CVP click
+
+    const x = d.i * basis.b1[0] + d.j * basis.b2[0];
+    const y = d.i * basis.b1[1] + d.j * basis.b2[1];
+
+    if (onPointSelected) {
+      onPointSelected({
+        i: d.i,
+        j: d.j,
+        x,
+        y,
+        basis: { b1: [...basis.b1], b2: [...basis.b2] },
+      });
+    }
   });
 
   return {
@@ -608,7 +633,7 @@ function createLatticeEngine(containerEl, options) {
       const { b1, b2 } = generateNonReducedBasis();
       setBasis(b1, b2);
     },
-    // NEW: allow React to trigger a (re)layout, optionally with intro animation
+    // allow React to trigger a (re)layout, optionally with intro animation
     relayout(animated = false) {
       layoutStatic(animated);
     },
@@ -619,6 +644,10 @@ function createLatticeEngine(containerEl, options) {
     },
   };
 }
+
+// --------------------------------------------------
+// React component
+// --------------------------------------------------
 
 function LatticeDemo() {
   const containerRef = useRef(null);
@@ -632,15 +661,18 @@ function LatticeDemo() {
   const [cvpRadiusFactor, setCvpRadiusFactor] = useState(0.6);
   const [cvpUnlockedBeyondCap, setCvpUnlockedBeyondCap] = useState(false);
 
-  // -----------------------------
+  // NEW: currently selected lattice point
+  const [selectedPoint, setSelectedPoint] = useState(null);
+
   // Initialise lattice engine
-  // -----------------------------
   useEffect(() => {
     if (!containerRef.current) return undefined;
 
     const engine = createLatticeEngine(containerRef.current, {
       onBasisText: setBasisText,
       onCvpText: setCvpText,
+      onPointSelected: setSelectedPoint, // hook the click callback
+      onBackgroundClick: () => setSelectedPoint(null), // NEW
       initialShowShortest: showShortest,
       initialCvpEnabled: cvpEnabled,
       initialCvpRadiusFactor: cvpRadiusFactor,
@@ -694,19 +726,20 @@ function LatticeDemo() {
     return () => observer.disconnect();
   }, []);
 
-  // -----------------------------
   // Lattice controls
-  // -----------------------------
   const handleBasisA = () => {
     engineRef.current?.useBasisA();
+    setSelectedPoint(null);
   };
 
   const handleBasisB = () => {
     engineRef.current?.useBasisB();
+    setSelectedPoint(null);
   };
 
   const handleRandom = () => {
     engineRef.current?.useRandomBasis();
+    setSelectedPoint(null);
   };
 
   const handleShortestToggle = (e) => {
@@ -733,6 +766,60 @@ function LatticeDemo() {
     engineRef.current?.setCvpRadiusFactor(raw);
   };
 
+  // Helper to render decomposition matrix for selected point
+  const renderPointDecomposition = () => {
+    if (!selectedPoint) return null;
+    const { i, j } = selectedPoint;
+
+    const latex = String.raw`
+      \bigl[\,\mathbf{b}_1 \ \mathbf{b}_2\,\bigr]
+      \begin{bmatrix}
+        ${i} \\
+        ${j}
+      \end{bmatrix}
+    `;
+
+    return (
+      <div
+        style={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+          padding: "0.55rem 0.7rem",
+          fontSize: "0.8rem",
+          background: "rgba(255,255,255,0.97)",
+          borderRadius: "0.5rem",
+          border: "1px solid rgba(0,0,0,0.15)",
+          boxShadow: "0 3px 10px rgba(0,0,0,0.25)",
+          maxWidth: "260px",
+        }}
+      >
+        <div
+          style={{
+            marginBottom: "0.2rem",
+            fontWeight: 600,
+            fontSize: "0.8rem",
+          }}
+        >
+          Decomposition of lattice point ({i}, {j})
+        </div>
+        <div style={{ fontSize: "0.9rem" }}>
+          <BlockMath math={latex} />
+        </div>
+        <div
+          style={{
+            marginTop: "0.1rem",
+            fontSize: "0.7rem",
+            color: "#666",
+          }}
+        >
+          in the current basis&nbsp;
+          <span style={{ fontFamily: "monospace" }}>(b₁, b₂)</span>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
       ref={wrapperRef}
@@ -756,12 +843,12 @@ function LatticeDemo() {
         }}
       />
 
-      {/* Draggable panel that just receives content */}
+      {/* Draggable panel with controls, starting minimized */}
       <DraggablePanel
         title="Lattice & CVP controls"
         width={360}
         height={110}
-        initialMinimized={true} // <--- HERE
+        initialMinimized={true}
         dockX={10}
         dockY={20}
       >
@@ -882,6 +969,9 @@ function LatticeDemo() {
           </div>
         </div>
       </DraggablePanel>
+
+      {/* Decomposition window in the right corner */}
+      {renderPointDecomposition()}
     </div>
   );
 }

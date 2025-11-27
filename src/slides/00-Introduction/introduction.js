@@ -1,6 +1,7 @@
 import BackgroundIntro from "./00-background-intro";
 import LatticeDemo from "./01-latticeDemo";
 import LWEIntroSlides from "./03-lweIntroSlides";
+import LweAnimeSlide from "./03-LWE_Demo";
 function Introduction() {
   return (
     <>
@@ -14,6 +15,7 @@ function Introduction() {
           <LatticeDemo />
         </section>
       </section>
+      {/* <LweAnimeSlide /> */}
 
       <LWEIntroSlides />
     </>
