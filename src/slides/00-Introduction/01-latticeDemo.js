@@ -13,6 +13,7 @@ const COLORS = {
   shortest2: "#9467bd",
   cvpPoint: "#2ca02c",
   cvpLine: "#2ca02c",
+  dualPoint: "#e377c2",
 };
 
 const BASIS_A = { b1: [1, 0], b2: [0.4, 1] };
@@ -104,6 +105,21 @@ function computeShortestPrimitiveVectors(basis, maxCoeff = POINT_RANGE) {
   return result;
 }
 
+function computeDualBasis(basis) {
+  const [a, b] = basis.b1;
+  const [c, d] = basis.b2;
+  const det = a * d - b * c;
+
+  if (det === 0) {
+    return { b1: [0, 0], b2: [0, 0] };
+  }
+
+  return {
+    b1: [d / det, -b / det],
+    b2: [-c / det, a / det],
+  };
+}
+
 function formatBasisText(basis) {
   const [b1x, b1y] = basis.b1;
   const [b2x, b2y] = basis.b2;
@@ -136,6 +152,7 @@ function createLatticeEngine(containerEl, options) {
     onPointSelected,
     onBackgroundClick, // NEW
     initialShowShortest = true,
+    initialShowDual = false,
     initialCvpEnabled = false,
     initialCvpRadiusFactor = 0.6,
   } = options;
@@ -148,6 +165,7 @@ function createLatticeEngine(containerEl, options) {
 
   let basis = { ...BASIS_A };
   let showShortest = initialShowShortest;
+  let showDual = initialShowDual;
   let cvpEnabled = initialCvpEnabled;
   let cvpRadiusFactor = initialCvpRadiusFactor;
   let cvpTarget = null;
@@ -157,10 +175,11 @@ function createLatticeEngine(containerEl, options) {
   const {
     grid,
     lattice,
+    dualLattice,
     basis: basisLayer,
     shortest,
     cvp,
-  } = createLayers(svg, ["grid", "lattice", "basis", "shortest", "cvp"]);
+  } = createLayers(svg, ["grid", "lattice", "dualLattice", "basis", "shortest", "cvp"]);
 
   const circles = lattice
     .selectAll("circle.lattice-point")
@@ -190,6 +209,16 @@ function createLatticeEngine(containerEl, options) {
   function latticeToScreen(i, j) {
     const x = i * basis.b1[0] + j * basis.b2[0];
     const y = i * basis.b1[1] + j * basis.b2[1];
+    return {
+      x: origin.x + x * SCALE,
+      y: origin.y - y * SCALE,
+    };
+  }
+
+  function dualLatticeToScreen(i, j) {
+    const dualBasis = computeDualBasis(basis);
+    const x = i * dualBasis.b1[0] + j * dualBasis.b2[0];
+    const y = i * dualBasis.b1[1] + j * dualBasis.b2[1];
     return {
       x: origin.x + x * SCALE,
       y: origin.y - y * SCALE,
@@ -246,6 +275,46 @@ function createLatticeEngine(containerEl, options) {
     }
 
     lineSel.exit().remove();
+  }
+
+  function updateDualLattice(animated = false, duration = 0) {
+    const data = showDual ? latticeIndices : [];
+    const pointSel = dualLattice
+      .selectAll("circle.dual-point")
+      .data(data, (d) => `${d.i},${d.j}`);
+
+    pointSel.exit().remove();
+
+    if (!showDual) return;
+
+    const pointEnter = pointSel
+      .enter()
+      .append("circle")
+      .attr("class", "dual-point")
+      .attr("fill", "white")
+      .attr("stroke", COLORS.dualPoint)
+      .attr("stroke-width", 1.5)
+      .attr("opacity", 0.9)
+      .attr("r", animated && duration > 0 ? 0 : 3);
+
+    const merged = pointSel.merge(pointEnter);
+
+    const setPosition = (sel) =>
+      sel
+        .attr("cx", (d) => dualLatticeToScreen(d.i, d.j).x)
+        .attr("cy", (d) => dualLatticeToScreen(d.i, d.j).y)
+        .attr("r", 3);
+
+    if (animated && duration > 0) {
+      merged
+        .attr("cx", origin.x)
+        .attr("cy", origin.y)
+        .transition("dual")
+        .duration(duration)
+        .call(setPosition);
+    } else {
+      setPosition(merged);
+    }
   }
 
   function updateBasisDisplay() {
@@ -481,6 +550,8 @@ function createLatticeEngine(containerEl, options) {
     // Grid: optionally pierce out from origin
     drawGrid(animated);
 
+    updateDualLattice(animated, animated ? 800 : 0);
+
     // Basis vectors
     ["b1", "b2"].forEach((key, idx) => {
       const v = basis[key];
@@ -542,6 +613,7 @@ function createLatticeEngine(containerEl, options) {
       .attr("cy", (d) => latticeToScreen(d.i, d.j).y);
 
     drawGrid();
+    updateDualLattice(true, duration);
 
     ["b1", "b2"].forEach((key, idx) => {
       const v = basis[key];
@@ -611,6 +683,10 @@ function createLatticeEngine(containerEl, options) {
       showShortest = flag;
       updateShortestVectors(false, 0);
     },
+    setShowDual(flag) {
+      showDual = flag;
+      updateDualLattice(true, 600);
+    },
     setCvpEnabled(flag) {
       cvpEnabled = flag;
       if (!flag) {
@@ -657,6 +733,7 @@ function LatticeDemo() {
   const [basisText, setBasisText] = useState("");
   const [cvpText, setCvpText] = useState("");
   const [showShortest, setShowShortest] = useState(true);
+  const [showDual, setShowDual] = useState(false);
   const [cvpEnabled, setCvpEnabled] = useState(false);
   const [cvpRadiusFactor, setCvpRadiusFactor] = useState(0.6);
   const [cvpUnlockedBeyondCap, setCvpUnlockedBeyondCap] = useState(false);
@@ -674,6 +751,7 @@ function LatticeDemo() {
       onPointSelected: setSelectedPoint, // hook the click callback
       onBackgroundClick: () => setSelectedPoint(null), // NEW
       initialShowShortest: showShortest,
+      initialShowDual: showDual,
       initialCvpEnabled: cvpEnabled,
       initialCvpRadiusFactor: cvpRadiusFactor,
     });
@@ -746,6 +824,12 @@ function LatticeDemo() {
     const flag = e.target.checked;
     setShowShortest(flag);
     engineRef.current?.setShowShortest(flag);
+  };
+
+  const handleDualToggle = (e) => {
+    const flag = e.target.checked;
+    setShowDual(flag);
+    engineRef.current?.setShowDual(flag);
   };
 
   const handleCvpToggle = (e) => {
@@ -903,6 +987,15 @@ function LatticeDemo() {
                 style={{ marginRight: "0.25rem" }}
               />
               shortest
+            </label>
+            <label className="checkbox is-small">
+              <input
+                type="checkbox"
+                checked={showDual}
+                onChange={handleDualToggle}
+                style={{ marginRight: "0.25rem" }}
+              />
+              dual lattice
             </label>
             <label className="checkbox is-small">
               <input
