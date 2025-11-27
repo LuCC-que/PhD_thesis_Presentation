@@ -1,8 +1,13 @@
 ﻿import React, { useEffect, useRef, useState } from "react";
+import DraggablePanel from "../components/DraggablePanel";
+import { animate } from "animejs";
 import * as d3 from "d3";
 
-const POINT_RANGE = 12;
-const SCALE = 120;
+const POINT_RANGE = 10;
+const SCALE = 160;
+
+const HEADER_WIDTH = 360; // was 420
+const HEADER_HEIGHT = 110; // was 120
 
 const COLORS = {
   defaultPoint: "#222",
@@ -149,13 +154,13 @@ function createLatticeEngine(containerEl, options) {
 
   const svg = createFullScreenSVG(containerEl);
   createArrowMarker(svg);
-  const { grid, lattice, basis: basisLayer, shortest, cvp } = createLayers(svg, [
-    "grid",
-    "lattice",
-    "basis",
-    "shortest",
-    "cvp",
-  ]);
+  const {
+    grid,
+    lattice,
+    basis: basisLayer,
+    shortest,
+    cvp,
+  } = createLayers(svg, ["grid", "lattice", "basis", "shortest", "cvp"]);
 
   const circles = lattice
     .selectAll("circle.lattice-point")
@@ -198,9 +203,7 @@ function createLatticeEngine(containerEl, options) {
     };
   }
 
-  function drawGrid() {
-    grid.selectAll("*").remove();
-
+  function drawGrid(animated = false) {
     const lines = [];
     for (let j = -POINT_RANGE; j <= POINT_RANGE; j++) {
       const p1 = latticeToScreen(-POINT_RANGE, j);
@@ -213,16 +216,36 @@ function createLatticeEngine(containerEl, options) {
       lines.push({ x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y });
     }
 
-    grid
-      .selectAll("line")
-      .data(lines)
-      .join("line")
-      .attr("x1", (d) => d.x1)
-      .attr("y1", (d) => d.y1)
-      .attr("x2", (d) => d.x2)
-      .attr("y2", (d) => d.y2)
+    const lineSel = grid.selectAll("line").data(lines);
+    const lineEnter = lineSel
+      .enter()
+      .append("line")
       .attr("stroke", "#ddd")
       .attr("stroke-width", 0.7);
+
+    const merged = lineSel.merge(lineEnter);
+
+    if (animated) {
+      merged
+        .attr("x1", origin.x)
+        .attr("y1", origin.y)
+        .attr("x2", origin.x)
+        .attr("y2", origin.y)
+        .transition("intro-grid")
+        .duration(800)
+        .attr("x1", (d) => d.x1)
+        .attr("y1", (d) => d.y1)
+        .attr("x2", (d) => d.x2)
+        .attr("y2", (d) => d.y2);
+    } else {
+      merged
+        .attr("x1", (d) => d.x1)
+        .attr("y1", (d) => d.y1)
+        .attr("x2", (d) => d.x2)
+        .attr("y2", (d) => d.y2);
+    }
+
+    lineSel.exit().remove();
   }
 
   function updateBasisDisplay() {
@@ -240,7 +263,8 @@ function createLatticeEngine(containerEl, options) {
     }
 
     const shortestVectors = computeShortestPrimitiveVectors(basis, POINT_RANGE);
-    const colorForIndex = (idx) => (idx === 0 ? COLORS.shortest1 : COLORS.shortest2);
+    const colorForIndex = (idx) =>
+      idx === 0 ? COLORS.shortest1 : COLORS.shortest2;
 
     shortestVectors.forEach((v, idx) => {
       const color = colorForIndex(idx);
@@ -338,7 +362,10 @@ function createLatticeEngine(containerEl, options) {
         .duration(duration)
         .attr("r", radius);
     } else {
-      circleUpdate.attr("cx", (d) => d.x).attr("cy", (d) => d.y).attr("r", radius);
+      circleUpdate
+        .attr("cx", (d) => d.x)
+        .attr("cy", (d) => d.y)
+        .attr("r", radius);
     }
     circleSel.exit().remove();
 
@@ -348,7 +375,11 @@ function createLatticeEngine(containerEl, options) {
       .append("circle")
       .attr("class", "cvp-center")
       .attr("fill", COLORS.cvpPoint);
-    centerSel.merge(centerEnter).attr("cx", cvpTarget.x).attr("cy", cvpTarget.y).attr("r", 4);
+    centerSel
+      .merge(centerEnter)
+      .attr("cx", cvpTarget.x)
+      .attr("cy", cvpTarget.y)
+      .attr("r", 4);
     centerSel.exit().remove();
 
     if (radius > halfShortestScreen) {
@@ -406,39 +437,97 @@ function createLatticeEngine(containerEl, options) {
       .attr("fill", "none")
       .attr("stroke", COLORS.cvpPoint)
       .attr("stroke-width", 2);
-    pointSel.merge(pointEnter).attr("cx", best.x).attr("cy", best.y).attr("r", 8);
+    pointSel
+      .merge(pointEnter)
+      .attr("cx", best.x)
+      .attr("cy", best.y)
+      .attr("r", 8);
     pointSel.exit().remove();
   }
 
-  function layoutStatic() {
+  function layoutStatic(animated = false) {
     width = containerEl.clientWidth || 0;
     height = containerEl.clientHeight || 0;
     origin = { x: width / 2, y: height / 2 };
 
     svg.attr("viewBox", `0 0 ${width} ${height}`);
 
-    circles
-      .attr("cx", (d) => latticeToScreen(d.i, d.j).x)
-      .attr("cy", (d) => latticeToScreen(d.i, d.j).y);
-    drawGrid();
+    if (animated) {
+      // Intro: points start at origin and fly out
+      circles
+        .attr("cx", origin.x)
+        .attr("cy", origin.y)
+        .attr("r", 0)
+        .attr("opacity", 0)
+        .transition("intro-points")
+        .delay((d) => {
+          const dist = Math.sqrt(d.i * d.i + d.j * d.j);
+          return dist * 40; // radial wave effect
+        })
+        .duration(600)
+        .attr("cx", (d) => latticeToScreen(d.i, d.j).x)
+        .attr("cy", (d) => latticeToScreen(d.i, d.j).y)
+        .attr("r", 3.5)
+        .attr("opacity", 0.9);
+    } else {
+      circles
+        .interrupt("intro-points")
+        .attr("cx", (d) => latticeToScreen(d.i, d.j).x)
+        .attr("cy", (d) => latticeToScreen(d.i, d.j).y)
+        .attr("r", 3.5)
+        .attr("opacity", 0.9);
+    }
 
+    // Grid: optionally pierce out from origin
+    drawGrid(animated);
+
+    // Basis vectors
     ["b1", "b2"].forEach((key, idx) => {
       const v = basis[key];
       const end = basisVectorToScreen(v);
 
-      basisLines
-        .filter((d, i) => i === idx)
-        .attr("x1", origin.x)
-        .attr("y1", origin.y)
-        .attr("x2", end.x)
-        .attr("y2", end.y)
-        .attr("stroke", key === "b1" ? "#d62728" : "#1f77b4");
+      const line = basisLines.filter((d, i) => i === idx);
+      const label = basisLabels.filter((d, i) => i === idx);
 
-      basisLabels.filter((d, i) => i === idx).attr("x", end.x).attr("y", end.y).text(key);
+      if (animated) {
+        line
+          .attr("x1", origin.x)
+          .attr("y1", origin.y)
+          .attr("x2", origin.x)
+          .attr("y2", origin.y)
+          .attr("stroke", key === "b1" ? "#d62728" : "#1f77b4")
+          .transition("intro-basis")
+          .duration(800)
+          .attr("x2", end.x)
+          .attr("y2", end.y);
+
+        label
+          .attr("x", origin.x)
+          .attr("y", origin.y)
+          .text(key)
+          .transition("intro-basis-label")
+          .duration(800)
+          .attr("x", end.x)
+          .attr("y", end.y);
+      } else {
+        line
+          .interrupt("intro-basis")
+          .attr("x1", origin.x)
+          .attr("y1", origin.y)
+          .attr("x2", end.x)
+          .attr("y2", end.y)
+          .attr("stroke", key === "b1" ? "#d62728" : "#1f77b4");
+
+        label
+          .interrupt("intro-basis-label")
+          .attr("x", end.x)
+          .attr("y", end.y)
+          .text(key);
+      }
     });
 
     updateBasisDisplay();
-    updateShortestVectors(false, 0);
+    updateShortestVectors(animated, animated ? 900 : 0);
     updateCVPVisualization(false, 0);
   }
 
@@ -468,7 +557,7 @@ function createLatticeEngine(containerEl, options) {
         .attr("y2", end.y);
 
       basisLabels
-        .filter((d, i) => i === idx)
+        .filter((_, i) => i === idx)
         .transition("move")
         .duration(duration)
         .attr("x", end.x)
@@ -479,9 +568,10 @@ function createLatticeEngine(containerEl, options) {
     updateCVPVisualization(false, 0);
   }
 
-  layoutStatic();
+  // initial layout (may be zero-sized; React will trigger a proper one later)
+  layoutStatic(false);
 
-  const resizeHandler = () => layoutStatic();
+  const resizeHandler = () => layoutStatic(false);
   window.addEventListener("resize", resizeHandler);
 
   svg.on("click", (event) => {
@@ -518,6 +608,10 @@ function createLatticeEngine(containerEl, options) {
       const { b1, b2 } = generateNonReducedBasis();
       setBasis(b1, b2);
     },
+    // NEW: allow React to trigger a (re)layout, optionally with intro animation
+    relayout(animated = false) {
+      layoutStatic(animated);
+    },
     destroy() {
       window.removeEventListener("resize", resizeHandler);
       svg.on("click", null);
@@ -529,6 +623,7 @@ function createLatticeEngine(containerEl, options) {
 function LatticeDemo() {
   const containerRef = useRef(null);
   const engineRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   const [basisText, setBasisText] = useState("");
   const [cvpText, setCvpText] = useState("");
@@ -537,8 +632,12 @@ function LatticeDemo() {
   const [cvpRadiusFactor, setCvpRadiusFactor] = useState(0.6);
   const [cvpUnlockedBeyondCap, setCvpUnlockedBeyondCap] = useState(false);
 
+  // -----------------------------
+  // Initialise lattice engine
+  // -----------------------------
   useEffect(() => {
     if (!containerRef.current) return undefined;
+
     const engine = createLatticeEngine(containerRef.current, {
       onBasisText: setBasisText,
       onCvpText: setCvpText,
@@ -547,12 +646,57 @@ function LatticeDemo() {
       initialCvpRadiusFactor: cvpRadiusFactor,
     });
     engineRef.current = engine;
+
     return () => {
       engine.destroy();
       engineRef.current = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Keep layout correct on resize
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const el = containerRef.current;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        if (!engineRef.current) return;
+        if (width > 0 && height > 0) {
+          engineRef.current.relayout(false);
+        }
+      }
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Intro animation when this slide/component enters the viewport
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+
+    const target = wrapperRef.current;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            if (!engineRef.current) return;
+            engineRef.current.relayout(true);
+          }
+        }
+      },
+      { threshold: [0.5] }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  // -----------------------------
+  // Lattice controls
+  // -----------------------------
   const handleBasisA = () => {
     engineRef.current?.useBasisA();
   };
@@ -590,113 +734,155 @@ function LatticeDemo() {
   };
 
   return (
-    <section style={{ height: "100%", width: "100%" }}>
+    <div
+      ref={wrapperRef}
+      className="lattice-demo-root"
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        overflow: "hidden",
+        background: "white",
+      }}
+    >
+      {/* Full-screen lattice canvas */}
       <div
-        className="section"
+        ref={containerRef}
         style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
           height: "100%",
-          paddingTop: "0.75rem",
-          paddingBottom: "0.75rem",
         }}
+      />
+
+      {/* Draggable panel that just receives content */}
+      <DraggablePanel
+        title="Lattice & CVP controls"
+        width={360}
+        height={110}
+        initialMinimized={true} // <--- HERE
+        dockX={10}
+        dockY={20}
       >
+        {/* Row 1: basis buttons */}
         <div
-          className="box"
-          style={{ height: "100%", display: "flex", flexDirection: "column" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            marginBottom: "0.3rem",
+          }}
         >
-          <div
-            className="is-flex is-justify-content-space-between is-align-items-center"
-            style={{ marginBottom: "0.75rem", gap: "1rem" }}
+          <button
+            className="button is-small is-link"
+            type="button"
+            onClick={handleBasisA}
           >
-            <div className="field is-grouped is-grouped-multiline">
-              <p className="control">
-                <button className="button is-small is-link" onClick={handleBasisA}>
-                  Basis A
-                </button>
-              </p>
-              <p className="control">
-                <button className="button is-small is-link is-light" onClick={handleBasisB}>
-                  Basis B
-                </button>
-              </p>
-              <p className="control">
-                <button className="button is-small is-info" onClick={handleRandom}>
-                  Random non-reduced
-                </button>
-              </p>
+            Basis A
+          </button>
+          <button
+            className="button is-small is-link is-light"
+            type="button"
+            onClick={handleBasisB}
+          >
+            Basis B
+          </button>
+          <button
+            className="button is-small is-info"
+            type="button"
+            onClick={handleRandom}
+          >
+            Random
+          </button>
+        </div>
 
-              <p className="control">
-                <label className="checkbox is-small">
-                  <input
-                    type="checkbox"
-                    checked={showShortest}
-                    onChange={handleShortestToggle}
-                    style={{ marginRight: "0.35rem" }}
-                  />
-                  Show shortest vectors
-                </label>
-              </p>
-
-              <p className="control">
-                <label className="checkbox is-small">
-                  <input
-                    type="checkbox"
-                    checked={cvpEnabled}
-                    onChange={handleCvpToggle}
-                    style={{ marginRight: "0.35rem" }}
-                  />
-                  CVP mode (click to place target)
-                </label>
-              </p>
-
-              <div className="field is-horizontal" style={{ marginLeft: "0.75rem" }}>
-                <div className="field-label is-normal">
-                  <label className="label is-small" style={{ fontSize: "0.8rem" }}>
-                    Radius factor
-                  </label>
-                </div>
-                <div className="field-body">
-                  <div className="field">
-                    <div className="control">
-                      <input
-                        className="slider is-fullwidth"
-                        type="range"
-                        min="0"
-                        max="1.5"
-                        step="0.01"
-                        value={cvpRadiusFactor}
-                        onChange={handleRadiusChange}
-                        style={{ width: "120px" }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="is-flex is-flex-direction-column is-align-items-flex-end"
-              style={{ fontSize: "0.8rem" }}
-            >
-              <div>{basisText}</div>
-              <div className="has-text-grey">{cvpText}</div>
-            </div>
+        {/* Row 2: toggles + radius slider */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "0.5rem",
+            marginBottom: "0.25rem",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+            <label className="checkbox is-small">
+              <input
+                type="checkbox"
+                checked={showShortest}
+                onChange={handleShortestToggle}
+                style={{ marginRight: "0.25rem" }}
+              />
+              shortest
+            </label>
+            <label className="checkbox is-small">
+              <input
+                type="checkbox"
+                checked={cvpEnabled}
+                onChange={handleCvpToggle}
+                style={{ marginRight: "0.25rem" }}
+              />
+              CVP
+            </label>
           </div>
 
           <div
-            className="box"
             style={{
-              flex: 1,
-              minHeight: 0,
-              padding: 0,
-              overflow: "hidden",
               display: "flex",
+              alignItems: "center",
+              gap: "0.3rem",
+              minWidth: 140,
             }}
           >
-            <div ref={containerRef} style={{ width: "100%", height: "100%", minHeight: 0 }} />
+            <span style={{ fontSize: "0.75rem", color: "#666" }}>Radius</span>
+            <input
+              className="slider is-fullwidth"
+              type="range"
+              min="0"
+              max="1.5"
+              step="0.01"
+              value={cvpRadiusFactor}
+              onChange={handleRadiusChange}
+              style={{ width: "100px" }}
+            />
           </div>
         </div>
-      </div>
-    </section>
+
+        {/* Row 3: status text */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: "0.5rem",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "0.7rem",
+              color: "#333",
+              maxWidth: "55%",
+              lineHeight: 1.25,
+            }}
+          >
+            {basisText}
+          </div>
+          <div
+            style={{
+              fontSize: "0.7rem",
+              color: "#777",
+              textAlign: "right",
+              maxWidth: "45%",
+              lineHeight: 1.25,
+            }}
+          >
+            {cvpText}
+          </div>
+        </div>
+      </DraggablePanel>
+    </div>
   );
 }
 

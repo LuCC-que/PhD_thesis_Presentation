@@ -16,21 +16,6 @@ function Title() {
           <br />
           <span>Learning With Errors Cryptography</span>
         </h1>
-
-        {/* Ghost subtitle so Reveal can animate it later */}
-        <div
-          data-id="subtitle-block"
-          style={{
-            marginTop: "10rem", // start very low
-            opacity: 0, // invisible first
-            fontSize: "1.4rem",
-            textAlign: "center",
-          }}
-        >
-          <h3>Comprehensive Exam Part II</h3>
-          <p>Presenter: Lu Chen</p>
-          <p>Supervisor: Jake Doliskani</p>
-        </div>
       </section>
 
       <section data-auto-animate>
@@ -62,8 +47,8 @@ function Title() {
           }}
         >
           <h3>Comprehensive Exam Part II</h3>
-          <p>Presenter: Lu Chen</p>
           <p>Supervisor: Jake Doliskani</p>
+          <p>Presenter: Lu Chen</p>
         </div>
       </section>
     </>

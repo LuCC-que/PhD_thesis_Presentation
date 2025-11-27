@@ -8,7 +8,7 @@ import "reveal.js/dist/theme/black.css";
 import Title from "./slides/titlePages";
 import Introduction from "./slides/00-Introduction/introduction";
 import ExampleSlide1 from "./slides/exampleSlide";
-import Overview_DGS from "./slides/01-DGS/Overview_DGS";
+import DGS from "./slides/01-DGS/DGS";
 
 function App() {
   const deckDivRef = useRef(null);
@@ -75,8 +75,8 @@ function App() {
       <div className="slides">
         <Title />
         <Introduction />
-        <ExampleSlide1 />
-        <Overview_DGS />
+        <DGS />
+        {/* <ExampleSlide1 /> */}
 
         <section>
           <section>slide 1</section>
