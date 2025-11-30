@@ -9,6 +9,7 @@ import Title from "./slides/titlePages";
 import Introduction from "./slides/00-Introduction/introduction";
 import ExampleSlide1 from "./slides/exampleSlide";
 import DGS from "./slides/01-DGS/DGS";
+import FirstPieces from "./slides/01-DGS/03-FirstPieces";
 
 function App() {
   const deckDivRef = useRef(null);
