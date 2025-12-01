@@ -10,6 +10,8 @@ import Introduction from "./slides/00-Introduction/introduction";
 import ExampleSlide1 from "./slides/exampleSlide";
 import DGS from "./slides/01-DGS/DGS";
 import FirstPieces from "./slides/01-DGS/03-FirstPieces";
+import Alt_Dists from "./slides/03-Alt-DISTs/Alt-Dists";
+import QRTLib from "./slides/04-QRTlib/QRTlib";
 
 function App() {
   const deckDivRef = useRef(null);
@@ -77,8 +79,9 @@ function App() {
         <Title />
         <Introduction />
         <DGS />
+        <Alt_Dists />
+        <QRTLib />
         {/* <ExampleSlide1 /> */}
-
         <section>
           <section>slide 1</section>
           <section>slide 1.2</section>
