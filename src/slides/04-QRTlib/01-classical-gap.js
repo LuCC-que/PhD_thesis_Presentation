@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const classicalGapStyles = [
   // 0: left block - classical background
@@ -17,7 +17,7 @@ const classicalGapStyles = [
 
 function ClassicalGapQRT() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="From Classical Real Transforms to a Quantum Gap"
       subtext={<>DCT, DST, Hartley vs QFT</>}
       blocks={[
@@ -77,3 +77,4 @@ function ClassicalGapQRT() {
 }
 
 export default ClassicalGapQRT;
+

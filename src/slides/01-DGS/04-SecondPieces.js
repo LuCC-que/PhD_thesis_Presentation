@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
+import * as d3 from "d3";
 
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 import LatticeDisplay from "../components/LatticeDisplay";
 import DraggablePanel from "../components/DraggablePanel";
 import {
@@ -22,6 +23,9 @@ function SecondPieces() {
   const displayRef = useRef(null);
   const overlayRef = useRef(null);
   const blockRef = useRef(null);
+  const displayRef2 = useRef(null);
+  const overlayRef2 = useRef(null);
+  const blockRef2 = useRef(null);
 
   const [divider, setDivider] = useState(1);
   const [scale, setScale] = useState(DEFAULT_SCALE);
@@ -36,6 +40,7 @@ function SecondPieces() {
 
   const handleModVectorComputed = (vec) => {
     displayRef.current?.setModVector(vec);
+    displayRef2.current?.setModVector(vec);
     setModResult(vec);
   };
 
@@ -50,6 +55,7 @@ function SecondPieces() {
     const reduced = reduceVectorModLattice(rawVec, dualBasis);
     setModResult(reduced.vec);
     displayRef.current?.setModVector(reduced.vec);
+    displayRef2.current?.setModVector(reduced.vec);
     setSelectedPoint({ i: modI, j: modJ, type: "dualScaled" });
   };
 
@@ -57,6 +63,8 @@ function SecondPieces() {
   useEffect(() => {
     displayRef.current?.relayout(true);
     overlayRef.current?.relayout(true);
+    displayRef2.current?.relayout(true);
+    overlayRef2.current?.relayout(true);
   }, []);
 
   // keep layout on resize
@@ -70,9 +78,20 @@ function SecondPieces() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!blockRef2.current) return undefined;
+    const observer = new ResizeObserver(() => {
+      displayRef2.current?.relayout(false);
+      overlayRef2.current?.relayout(false);
+    });
+    observer.observe(blockRef2.current);
+    return () => observer.disconnect();
+  }, []);
+
   // animate overlay scale changes
   useEffect(() => {
     overlayRef.current?.setScale(scale / Math.max(1, divider), 600);
+    overlayRef2.current?.setScale(scale / Math.max(1, divider), 600);
   }, [divider, scale]);
 
   const leftBlock = (
@@ -193,8 +212,8 @@ function SecondPieces() {
               fontSize: "0.8rem",
             }}
           >
-            Decomposition of dual lattice point in L*/{divider} ({selectedPoint.i},{" "}
-            {selectedPoint.j})
+            Decomposition of dual lattice point in L*/{divider} (
+            {selectedPoint.i}, {selectedPoint.j})
           </div>
           <div style={{ fontSize: "0.9rem" }}>
             <BlockMath
@@ -214,7 +233,8 @@ function SecondPieces() {
               color: "#666",
             }}
           >
-            in the current dual basis <span style={{ fontFamily: "monospace" }}>(b1*, b2*)</span>
+            in the current dual basis{" "}
+            <span style={{ fontFamily: "monospace" }}>(b1*, b2*)</span>
           </div>
         </div>
       ) : null}
@@ -309,6 +329,7 @@ function SecondPieces() {
                   setModResult(null);
                   setSelectedPoint(null);
                   displayRef.current?.setModVector(null);
+                  displayRef2.current?.setModVector(null);
                 }
               }}
             />
@@ -330,7 +351,9 @@ function SecondPieces() {
               <div style={{ fontWeight: 600, fontSize: "0.8rem" }}>
                 Manual mod P(L*) on L*/{divider}
               </div>
-              <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}>
+              <div
+                style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}
+              >
                 <span style={{ fontSize: "0.75rem", color: "#555" }}>i, j</span>
                 <input
                   type="number"
@@ -353,14 +376,20 @@ function SecondPieces() {
                 </button>
               </div>
               {modResult ? (
-                <div style={{ fontSize: "0.78rem", color: "#333", lineHeight: 1.3 }}>
-                  Result in P(L*): (
-                  {modResult[0].toFixed(2)}, {modResult[1].toFixed(2)})
+                <div
+                  style={{
+                    fontSize: "0.78rem",
+                    color: "#333",
+                    lineHeight: 1.3,
+                  }}
+                >
+                  Result in P(L*): ({modResult[0].toFixed(2)},{" "}
+                  {modResult[1].toFixed(2)})
                 </div>
               ) : (
                 <div style={{ fontSize: "0.72rem", color: "#666" }}>
-                  Enter indices of L*/{divider} then compute. Result is plotted in the
-                  grey fundamental domain.
+                  Enter indices of L*/{divider} then compute. Result is plotted
+                  in the grey fundamental domain.
                 </div>
               )}
             </div>
@@ -388,13 +417,165 @@ function SecondPieces() {
     </div>
   );
 
+  const GaussianChartBlock = () => {
+    const chartRef = useRef(null);
+
+    useEffect(() => {
+      const LAYOUT = {
+        width: 600,
+        height: 400,
+        margin: { top: 40, right: 80, bottom: 50, left: 60 },
+        legendOffset: { x: -70, y: 10 },
+      };
+      const DOMAIN = { x: [-5, 5], y: [0, 1], step: 0.02 };
+      const GAUSSIAN_PARAMS = [
+        { s: 2.0, color: "red" },
+        { s: 1.0, color: "green" },
+        { s: 0.5, color: "blue" },
+      ];
+      const AXIS = { xLabel: "‖x‖", yLabel: "ρₛ(‖x‖)" };
+
+      const container = chartRef.current;
+      if (!container) return undefined;
+      d3.select(container).selectAll("*").remove();
+
+      const { width, height, margin } = LAYOUT;
+      const svg = d3
+        .select(container)
+        .append("svg")
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+      const g = svg
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      const xScale = d3.scaleLinear().domain(DOMAIN.x).range([0, innerWidth]);
+      const yScale = d3.scaleLinear().domain(DOMAIN.y).range([innerHeight, 0]);
+
+      g.append("g")
+        .attr("transform", `translate(0,${innerHeight})`)
+        .call(d3.axisBottom(xScale));
+      g.append("g").call(d3.axisLeft(yScale).ticks(5));
+
+      g.append("text")
+        .attr("x", innerWidth / 2)
+        .attr("y", innerHeight + 40)
+        .attr("text-anchor", "middle")
+        .attr("font-size", 12)
+        .text(AXIS.xLabel);
+      g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -innerHeight / 2)
+        .attr("y", -45)
+        .attr("text-anchor", "middle")
+        .attr("font-size", 12)
+        .text(AXIS.yLabel);
+
+      const xs = d3.range(DOMAIN.x[0], DOMAIN.x[1] + 0.01, DOMAIN.step);
+      const line = d3
+        .line()
+        .x((d) => xScale(d.x))
+        .y((d) => yScale(d.y));
+      GAUSSIAN_PARAMS.forEach((param, i) => {
+        const data = xs.map((x) => ({
+          x,
+          y: Math.exp(-(x * x) / (2 * param.s * param.s)),
+        }));
+        const path = g
+          .append("path")
+          .datum(data)
+          .attr("class", "gaussian-curve")
+          .attr("fill", "none")
+          .attr("stroke", param.color)
+          .attr("stroke-width", 2)
+          .attr("d", line);
+        const totalLength = path.node().getTotalLength();
+        path
+          .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
+          .attr("stroke-dashoffset", totalLength)
+          .transition()
+          .duration(2400)
+          .delay(i * 300)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
+      });
+
+      const legend = g
+        .append("g")
+        .attr(
+          "transform",
+          `translate(${innerWidth + LAYOUT.legendOffset.x}, ${
+            LAYOUT.legendOffset.y
+          })`
+        );
+      GAUSSIAN_PARAMS.forEach((param, idx) => {
+        const row = legend
+          .append("g")
+          .attr("transform", `translate(0, ${idx * 18})`);
+        row
+          .append("line")
+          .attr("x1", 0)
+          .attr("x2", 20)
+          .attr("y1", 0)
+          .attr("y2", 0)
+          .attr("stroke", param.color)
+          .attr("stroke-width", 2);
+        row
+          .append("text")
+          .attr("x", 25)
+          .attr("y", 4)
+          .attr("font-size", 11)
+          .text(`s = ${param.s}`);
+      });
+    }, []);
+
+    return (
+      <div
+        ref={chartRef}
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      />
+    );
+  };
+
+  const gaussianLeftBlock = (
+    <div
+      className="content is-size-4 has-text-left"
+      style={{
+        width: "100%",
+        padding: "1.4rem",
+        borderRadius: "0.75rem",
+        background: "rgba(0,0,0,0.04)",
+        border: "1px solid rgba(0,0,0,0.06)",
+      }}
+    >
+      <GaussianChartBlock />
+    </div>
+  );
+
   return (
-    <ContenSlide1
-      title="Larger CVPs, Wider Gaussian"
-      subtext="larger CVP in dual lattice enable more dual lattice points to be prepared"
-      blocks={[leftBlock, rightBlock]}
-    />
+    <>
+      <SlideTemplate1
+        title="Larger CVPs, Wider Gaussian"
+        subtext="larger CVP in dual lattice enable more dual lattice points to be prepared"
+        blocks={[leftBlock, rightBlock]}
+      />
+      <SlideTemplate1
+        title="Gaussian curves with dual lattice playground"
+        subtext="Same dual lattice interactions alongside the Gaussian ρₛ(‖x‖) curves"
+        blocks={[gaussianLeftBlock, rightBlock]}
+      />
+    </>
   );
 }
 
 export default SecondPieces;
+

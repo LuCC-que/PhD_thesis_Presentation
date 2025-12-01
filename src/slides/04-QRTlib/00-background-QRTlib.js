@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const qrtBackgroundStyles = [
   // 0: left block - what QRTlib is
@@ -17,7 +17,7 @@ const qrtBackgroundStyles = [
 
 function Background_QRTlib() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="QRTlib: Quantum Real Transforms Library"
       subtext={<>Quantum versions of cosine, sine, and Hartley transforms</>}
       blocks={[
@@ -76,3 +76,4 @@ function Background_QRTlib() {
 }
 
 export default Background_QRTlib;
+

@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const altDistOverviewStyles = [
   // 0: left block — core question
@@ -17,7 +17,7 @@ const altDistOverviewStyles = [
 
 function Overview_AltDists() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="Fitting Alternative Noise Distributions into the DGS Framework"
       subtext={
         <>
@@ -79,3 +79,4 @@ function Overview_AltDists() {
 }
 
 export default Overview_AltDists;
+

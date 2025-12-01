@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 const pqcTwoBlockStyles = [
   // 0: first block — classical crypto & quantum threat
   {
@@ -16,7 +16,7 @@ const pqcTwoBlockStyles = [
 
 function BackgroundIntro() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="Why Post-Quantum Cryptography?"
       subtext={
         <>
@@ -83,3 +83,4 @@ function BackgroundIntro() {
 }
 
 export default BackgroundIntro;
+

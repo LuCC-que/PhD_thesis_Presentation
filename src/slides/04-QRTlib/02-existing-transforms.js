@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const existingTransformsStyles = [
   // 0: left block - prior work
@@ -17,7 +17,7 @@ const existingTransformsStyles = [
 
 function ExistingTransformsQRT() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="Existing Quantum Real Transforms"
       subtext={<>What's known and what is still missing</>}
       blocks={[
@@ -81,3 +81,4 @@ function ExistingTransformsQRT() {
 }
 
 export default ExistingTransformsQRT;
+

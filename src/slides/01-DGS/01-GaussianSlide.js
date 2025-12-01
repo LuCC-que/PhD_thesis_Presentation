@@ -1,5 +1,5 @@
-﻿import { useEffect, useRef } from "react";
-import { ContenSlide1 } from "../components/contentSlide1";
+import { useEffect, useRef } from "react";
+import { SlideTemplate1 } from "../components/contentSlide1";
 import * as d3 from "d3";
 
 const LAYOUT = {
@@ -10,9 +10,9 @@ const LAYOUT = {
 };
 
 const AXIS = {
-  xLabel: "‖x‖",
-  yLabel: "ρₛ(‖x‖)",
-  titlePrefix: "Plot of ρₛ(‖x‖) for s = ",
+  xLabel: "?x?",
+  yLabel: "??(?x?)",
+  titlePrefix: "Plot of ??(?x?) for s = ",
   yTicks: 5,
 };
 
@@ -232,7 +232,7 @@ function GaussianSlide() {
   }, []);
 
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="Discrete Gaussian Sampling (DGS)"
       subtext={
         <>
@@ -255,7 +255,7 @@ function GaussianSlide() {
               {String.raw`As $s$ becomes smaller, the distribution $\rho_s$ concentrates heavily around the shortest lattice vectors.`}
             </li>
             <li>
-              {String.raw`Eventually, samples land— with high probability— on the $i$-th shortest independent vector, giving an approximation to SIVP / Gap-SVP.`}
+              {String.raw`Eventually, samples land� with high probability� on the $i$-th shortest independent vector, giving an approximation to SIVP / Gap-SVP.`}
             </li>
           </ul>
         </div>,
@@ -284,3 +284,4 @@ function GaussianSlide() {
 }
 
 export default GaussianSlide;
+

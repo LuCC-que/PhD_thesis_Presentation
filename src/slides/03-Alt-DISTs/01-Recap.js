@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const gaussianOracleStyles = [
   // 0: left block - core expression
@@ -17,7 +17,7 @@ const gaussianOracleStyles = [
 
 function Recap_AltDists() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="Gaussian LWE Oracle: Template for Reductions"
       subtext={<>Why projection and smoothing are essential</>}
       blocks={[
@@ -80,3 +80,4 @@ function Recap_AltDists() {
 }
 
 export default Recap_AltDists;
+

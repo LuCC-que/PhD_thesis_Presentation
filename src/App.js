@@ -7,11 +7,11 @@ import "reveal.js/dist/theme/black.css";
 
 import Title from "./slides/titlePages";
 import Introduction from "./slides/00-Introduction/introduction";
-import ExampleSlide1 from "./slides/exampleSlide";
 import DGS from "./slides/01-DGS/DGS";
-import FirstPieces from "./slides/01-DGS/03-FirstPieces";
 import Alt_Dists from "./slides/03-Alt-DISTs/Alt-Dists";
 import QRTLib from "./slides/04-QRTlib/QRTlib";
+import PIR from "./slides/05-PIRs/PIR";
+import Conclusion from "./slides/06-Conclusion/conclusion";
 
 function App() {
   const deckDivRef = useRef(null);
@@ -81,11 +81,8 @@ function App() {
         <DGS />
         <Alt_Dists />
         <QRTLib />
-        {/* <ExampleSlide1 /> */}
-        <section>
-          <section>slide 1</section>
-          <section>slide 1.2</section>
-        </section>
+        <PIR />
+        <Conclusion />
       </div>
     </div>
   );

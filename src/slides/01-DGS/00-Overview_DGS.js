@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 import siftingImage from "../../assets/images/sifting_flower_x1.jpg";
 
 const dgsIntroStyles = [
@@ -18,7 +18,7 @@ const dgsIntroStyles = [
 
 function Overview_DGS() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="Discrete Gaussian Sampling (DGS)"
       subtext={
         <>
@@ -70,3 +70,4 @@ function Overview_DGS() {
 }
 
 export default Overview_DGS;
+

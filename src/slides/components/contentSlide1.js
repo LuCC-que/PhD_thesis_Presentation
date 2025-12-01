@@ -2,7 +2,7 @@ import "reveal.js/dist/reset.css";
 import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/black.css";
 
-export function ContenSlide1({ title, subtext, blocks }) {
+export function SlideTemplate1({ title, subtext, blocks }) {
   return (
     <section style={{ height: "100%", width: "100%" }}>
       <div
@@ -81,3 +81,4 @@ export function ContenSlide1({ title, subtext, blocks }) {
     </section>
   );
 }
+

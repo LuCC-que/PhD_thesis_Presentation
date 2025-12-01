@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const futureStyles = [
   // 0: left block - LWE implications
@@ -17,7 +17,7 @@ const futureStyles = [
 
 function FutureAltDists() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="From Cauchy to a General Smoothing Framework"
       subtext={<>Implications for LWE oracles and the Laplace direction</>}
       blocks={[
@@ -80,3 +80,4 @@ function FutureAltDists() {
 }
 
 export default FutureAltDists;
+

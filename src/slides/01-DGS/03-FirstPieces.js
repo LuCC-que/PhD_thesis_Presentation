@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 import LatticeDisplay from "../components/LatticeDisplay";
 import { BASIS_B, DEFAULT_SCALE } from "../components/latticeMath";
 import DraggablePanel from "../components/DraggablePanel";
@@ -261,12 +261,12 @@ function FirstPieces() {
 
   return (
     <>
-      <ContenSlide1
+      <SlideTemplate1
         title="LWE in CVP_{L*,d}"
         subtext="how does LWE solve CVP problem"
         blocks={[leftBlock, rightBlock]}
       />
-      <ContenSlide1
+      <SlideTemplate1
         title="LWE in CVP_{L*,d}"
         subtext="how does LWE solve CVP problem"
         blocks={[leftBlock2, rightBlock]}
@@ -276,3 +276,4 @@ function FirstPieces() {
 }
 
 export default FirstPieces;
+

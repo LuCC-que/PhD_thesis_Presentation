@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const contributionsStyles = [
   // 0: left block - main contributions
@@ -17,7 +17,7 @@ const contributionsStyles = [
 
 function ContributionsStatusQRT() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="QRTlib Contributions and Current Status"
       subtext={<>From theory to an executable quantum library</>}
       blocks={[
@@ -91,3 +91,4 @@ function ContributionsStatusQRT() {
 }
 
 export default ContributionsStatusQRT;
+

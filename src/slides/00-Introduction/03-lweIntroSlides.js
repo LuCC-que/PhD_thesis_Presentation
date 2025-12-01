@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const blockStyles = [
   // 0: Slide 1 – only block
@@ -32,7 +32,7 @@ function LWEIntroSlides() {
     <>
       <section>
         {/* --------------------- Vertical Slide 1 --------------------- */}
-        <ContenSlide1
+        <SlideTemplate1
           title="Components of LWE"
           blocks={[
             <div
@@ -67,7 +67,7 @@ function LWEIntroSlides() {
         />
 
         {/* --------------------- Vertical Slide 2 --------------------- */}
-        <ContenSlide1
+        <SlideTemplate1
           title="Constructing LWE Samples"
           subtext={
             <>
@@ -131,7 +131,7 @@ function LWEIntroSlides() {
         />
 
         {/* --------------------- Vertical Slide 3 --------------------- */}
-        <ContenSlide1
+        <SlideTemplate1
           title="The LWE Problem"
           subtext={<>The Learning With Errors (LWE) problem asks:</>}
           blocks={[
@@ -167,3 +167,4 @@ function LWEIntroSlides() {
 }
 
 export default LWEIntroSlides;
+

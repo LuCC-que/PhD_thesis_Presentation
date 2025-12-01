@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const BLOCKS_STYLE = [
   // 0: first block — DGS in 3 pieces
@@ -11,7 +11,7 @@ const BLOCKS_STYLE = [
 
 function DGSin3Pieces() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="Three Components of the DGS Algorithm"
       subtext={
         <>
@@ -45,3 +45,4 @@ function DGSin3Pieces() {
   );
 }
 export default DGSin3Pieces;
+

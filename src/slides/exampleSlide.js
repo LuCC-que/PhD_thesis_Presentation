@@ -4,11 +4,11 @@ import "reveal.js/dist/reset.css";
 import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/black.css";
 
-import { ContenSlide1 } from "./components/contentSlide1";
+import { SlideTemplate1 } from "./components/contentSlide1";
 
 function ExampleSlide1() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="Mental training VS physical training"
       subtext={
         <>
@@ -56,3 +56,4 @@ function ExampleSlide1() {
 }
 
 export default ExampleSlide1;
+

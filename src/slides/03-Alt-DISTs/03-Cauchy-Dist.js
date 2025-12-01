@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const cauchyStyles = [
   // 0: left block - classical framework
@@ -17,7 +17,7 @@ const cauchyStyles = [
 
 function CauchyDistSlide() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="Cauchy Noise: Smoothing vs Quantum Obstruction"
       subtext={<>Classically promising, quantumly problematic</>}
       blocks={[
@@ -81,3 +81,4 @@ function CauchyDistSlide() {
 }
 
 export default CauchyDistSlide;
+

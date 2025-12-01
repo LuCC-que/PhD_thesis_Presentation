@@ -1,4 +1,4 @@
-import { ContenSlide1 } from "../components/contentSlide1";
+import { SlideTemplate1 } from "../components/contentSlide1";
 
 const irwinHallStyles = [
   // 0: left block - projection failure
@@ -17,7 +17,7 @@ const irwinHallStyles = [
 
 function IR_DistSlide() {
   return (
-    <ContenSlide1
+    <SlideTemplate1
       title="Why Irwin-Hall Fails as LWE Noise"
       subtext={<>Projection and smoothing both break down</>}
       blocks={[
@@ -81,3 +81,4 @@ function IR_DistSlide() {
 }
 
 export default IR_DistSlide;
+
