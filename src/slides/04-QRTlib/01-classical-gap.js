@@ -25,7 +25,11 @@ function ClassicalGapQRT() {
         <div
           key="classical-background"
           className="content is-size-5 has-text-left"
-          style={{ ...classicalGapStyles[0], fontSize: "1.05rem", lineHeight: "1.4" }}
+          style={{
+            ...classicalGapStyles[0],
+            fontSize: "1.05rem",
+            lineHeight: "1",
+          }}
         >
           <h5 className="mb-3">Classical Background</h5>
           <ul className="ml-4">
@@ -34,7 +38,9 @@ function ClassicalGapQRT() {
               <li>Concentrates signal energy into few coefficients</li>
               <li>Core of JPEG / MPEG and many compression schemes</li>
             </ul>
-            <li style={{ marginTop: "0.75rem" }}>Discrete Sine Transform (DST)</li>
+            <li style={{ marginTop: "0.75rem" }}>
+              Discrete Sine Transform (DST)
+            </li>
             <ul className="ml-5">
               <li>Used in solving PDEs and spectral methods</li>
               <li>Natural for sine-type boundary conditions</li>
@@ -51,7 +57,11 @@ function ClassicalGapQRT() {
         <div
           key="quantum-perspective"
           className="content is-size-5 has-text-left"
-          style={{ ...classicalGapStyles[1], fontSize: "1.05rem", lineHeight: "1.4" }}
+          style={{
+            ...classicalGapStyles[1],
+            fontSize: "1.05rem",
+            lineHeight: "1",
+          }}
         >
           <h5 className="mb-3">Quantum Perspective</h5>
           <ul className="ml-4">
@@ -62,7 +72,9 @@ function ClassicalGapQRT() {
             </ul>
             <li style={{ marginTop: "0.75rem" }}>But:</li>
             <ul className="ml-5">
-              <li>Quantum real transforms (QCT, QST, QHT) are far less developed</li>
+              <li>
+                Quantum real transforms (QCT, QST, QHT) are far less developed
+              </li>
               <li>No widely adopted, efficient implementations</li>
             </ul>
             <li style={{ marginTop: "0.75rem" }}>
@@ -77,4 +89,3 @@ function ClassicalGapQRT() {
 }
 
 export default ClassicalGapQRT;
-

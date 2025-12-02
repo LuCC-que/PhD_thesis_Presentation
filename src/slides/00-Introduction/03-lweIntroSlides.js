@@ -1,29 +1,23 @@
 import { SlideTemplate1 } from "../components/contentSlide1";
 
 const blockStyles = [
-  // 0: Slide 1 – only block
+  // 0: Slide 1 – left block (setup)
   {
     width: "100%",
     height: "auto",
-    padding: "4rem 6rem 2rem 3rem", // top right bottom left
+    padding: "3rem 4rem 2rem 3rem",
   },
-  // 1: Slide 2 – left block (equations)
+  // 1: Slide 1 – right block (samples + matrix form)
   {
     width: "100%",
     height: "auto",
-    padding: "0rem 0rem 5rem 9rem",
+    padding: "3rem 3rem 2rem 1rem",
   },
-  // 2: Slide 2 – right block (text)
+  // 2: Slide 2 – single block
   {
     width: "100%",
     height: "auto",
-    padding: "0rem 9rem 5rem 0rem",
-  },
-  // 3: Slide 3 – only block
-  {
-    width: "100%",
-    height: "auto",
-    padding: "4rem 6rem 2rem 3rem",
+    padding: "0rem 6rem 6rem 8rem",
   },
 ];
 
@@ -33,131 +27,88 @@ function LWEIntroSlides() {
       <section>
         {/* --------------------- Vertical Slide 1 --------------------- */}
         <SlideTemplate1
-          title="Components of LWE"
+          title="LWE Setup & Samples"
           blocks={[
+            // LEFT: setup
             <div
-              key="slide1-block0"
+              key="slide1-left"
               className="content is-size-4 has-text-left"
               style={blockStyles[0]}
             >
-              <ol className="ml-4">
-                <li className="fragment" data-fragment-index="1">
-                  {String.raw`Sample $m$ random vectors 
-                    $\vec{a}_1, \vec{a}_2, \ldots, \vec{a}_m \in \mathbb{Z}_q^{n}$, 
-                    each drawn uniformly and independently.`}
+              <ul className="ml-4">
+                <li className="fragment">
+                  {String.raw`Fix modulus $q$ and dimension $n$.`}
                 </li>
+                <li className="fragment">
+                  {String.raw`Choose a secret vector $\vec{s} \in \mathbb{Z}_q^n$.`}
+                </li>
+                <li className="fragment">
+                  {String.raw`Let $\psi_\alpha$ be a noise distribution over $\mathbb{Z}$ (e.g., a discrete Gaussian).`}
+                </li>
+                <li className="fragment">
+                  {String.raw`For each sample, draw $\vec{a}_i \gets \mathbb{Z}_q^n$ uniformly.`}
+                </li>
+              </ul>
+            </div>,
 
-                <li className="fragment" data-fragment-index="2">
-                  {String.raw`Choose a fixed secret vector 
-                    $\vec{s} \in \mathbb{Z}_q^{n}$, which represents the hidden key to be recovered.`}
-                </li>
+            // RIGHT: samples + matrix form (appears later via fragments)
+            <div
+              key="slide1-right"
+              className="content is-size-4 has-text-left"
+              style={blockStyles[1]}
+            >
+              <div className="mb-4">
+                <p className="fragment">
+                  {String.raw`For each $i = 1,\ldots,m$ define an LWE sample by`}
+                </p>
+                <p className="fragment">
+                  {String.raw`$\langle \vec{a}_i, \vec{s} \rangle + e_i \equiv b_i \pmod{q}, \quad e_i \gets \psi_\alpha.$`}
+                </p>
+              </div>
 
-                <li className="fragment" data-fragment-index="3">
-                  {String.raw`For each vector $\vec{a}_i$, generate a small error term 
-                    $e_i$ from the noise distribution $\psi_\alpha$ (typically a discrete Gaussian 
-                    with standard deviation $\alpha q$).`}
-                </li>
-
-                <li className="fragment" data-fragment-index="4">
-                  {String.raw`These $e_i$ values model random perturbations or “learning errors.”`}
-                </li>
-              </ol>
+              <div>
+                <p className="fragment">
+                  {String.raw`Stacking all samples gives the matrix form`}
+                </p>
+                <p className="fragment">
+                  {String.raw`$\vec{b} \equiv A \vec{s} + \vec{e} \pmod{q},$`}
+                </p>
+                <p className="fragment">
+                  {String.raw`where $A$ has rows $\vec{a}_1,\ldots,\vec{a}_m$, $\vec{b} = (b_1,\ldots,b_m)$, and $\vec{e} = (e_1,\ldots,e_m)$.`}
+                </p>
+              </div>
             </div>,
           ]}
         />
 
         {/* --------------------- Vertical Slide 2 --------------------- */}
         <SlideTemplate1
-          title="Constructing LWE Samples"
+          title="The LWE Problem"
           subtext={
             <>
-              {String.raw`Recall: $\vec{a}_i$ are uniform samples, $\vec{s}$ is the secret, $e_i$ are small noise terms, and all equations are modulo $q$.`}
+              {String.raw`LWE is a noisy system of linear equations over $\mathbb{Z}_q$.`}
             </>
           }
           blocks={[
-            // LEFT BLOCK: equations
             <div
-              key="slide2-block0"
-              className="content is-size-4 has-text-left"
-              style={blockStyles[1]}
-            >
-              <div className="equation-sequence" style={{ textAlign: "left" }}>
-                <p className="fragment">
-                  {String.raw`$\langle \vec{a}_1, \vec{s} \rangle + e_1 \equiv b_1 \pmod{q}$`}
-                </p>
-
-                <p className="fragment">
-                  {String.raw`$\langle \vec{a}_2, \vec{s} \rangle + e_2 \equiv b_2 \pmod{q}$`}
-                </p>
-
-                <p className="fragment">{String.raw`$\cdots$`}</p>
-
-                <p className="fragment">
-                  {String.raw`$\langle \vec{a}_m, \vec{s} \rangle + e_m \equiv b_m \pmod{q}$`}
-                </p>
-              </div>
-            </div>,
-
-            // RIGHT BLOCK: explanation + matrix form
-            <div
-              key="slide2-block1"
+              key="slide2-main"
               className="content is-size-4 has-text-left"
               style={blockStyles[2]}
             >
               <ul className="ml-4">
                 <li className="fragment">
-                  {String.raw`The public data are the pairs $(\vec{a}_i, b_i)$ for $i = 1,\ldots,m$.`}
+                  {String.raw`Input: matrix $A \in \mathbb{Z}_q^{m \times n}$ and vector $\vec{b} \in \mathbb{Z}_q^m$.`}
                 </li>
-
                 <li className="fragment">
-                  {String.raw`Each pair is one noisy linear equation involving the secret $\vec{s}$.`}
+                  {String.raw`Promise: $\vec{b} \equiv A \vec{s} + \vec{e} \pmod{q}$ for some secret $\vec{s}$ and small noise $\vec{e}$.`}
                 </li>
-
                 <li className="fragment">
-                  {String.raw`
-                        Together, they form the matrix equation:
-                        \[
-                            \vec{b} \equiv A\vec{s} + \vec{e} \pmod{q}.
-                        \]
-                  `}
+                  {String.raw`Goal: given $(A,\vec{b})$, recover the hidden secret $\vec{s}$.`}
                 </li>
-
                 <li className="fragment">
-                  {String.raw`Here $A$ has rows $\vec{a}_i$, and $\vec{e} = (e_1,\ldots,e_m)$.`}
+                  {String.raw`If $\vec{e} = \vec{0}$, solving is easy linear algebra; with small noise, the problem is believed hard (via lattice reductions).`}
                 </li>
               </ul>
-            </div>,
-          ]}
-        />
-
-        {/* --------------------- Vertical Slide 3 --------------------- */}
-        <SlideTemplate1
-          title="The LWE Problem"
-          subtext={<>The Learning With Errors (LWE) problem asks:</>}
-          blocks={[
-            <div
-              key="slide3-block0"
-              className="content is-size-4 has-text-left"
-              style={blockStyles[3]}
-            >
-              <p>
-                {String.raw`Given the matrix $A$ and the vector $\vec{b}$, recover the hidden secret vector $\vec{s}$.`}
-              </p>
-
-              <p>
-                {String.raw`Without the error vector $\vec{e}$, the system is a set of linear equations over $\mathbb{Z}_q$ 
-                        and can be solved efficiently using Gaussian elimination.`}
-              </p>
-
-              <p>
-                {String.raw`However, the presence of small random errors makes the system inconsistent, and no efficient 
-                    algorithm is known for recovering $\vec{s}$ under standard assumptions.`}
-              </p>
-
-              <p>
-                {String.raw`This combination of linear structure with controlled noise is why LWE is both simple and 
-                    cryptographically strong.`}
-              </p>
             </div>,
           ]}
         />
@@ -167,4 +118,3 @@ function LWEIntroSlides() {
 }
 
 export default LWEIntroSlides;
-

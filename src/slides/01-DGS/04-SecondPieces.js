@@ -14,9 +14,9 @@ import {
 } from "../components/latticeMath";
 
 const formulaLines = [
-  "\\sum_x \\rho(x) \\lvert x \\bmod P(L^*) \\rangle",
-  "\\sum_x \\rho(x) \\lvert x \\rangle",
-  "\\sum_x \\rho(x) \\lvert x, \\bmod P(L^*) \\rangle",
+  "\\sum_{\\substack{l \\in L^*/R \\\\ \\|l\\| < d}} \\rho(l) \\lvert l \\bmod P(L^*) \\rangle",
+  "\\sum_{\\substack{l \\in L^*/R \\\\ \\|l\\| < d}} \\rho(l) \\lvert l \\rangle",
+  "\\sum_{\\substack{l \\in L^*/R \\\\ \\|l\\| < d}} \\rho(l) \\lvert l, l \\bmod P(L^*) \\rangle",
 ];
 
 function SecondPieces() {
@@ -103,13 +103,33 @@ function SecondPieces() {
         borderRadius: "0.75rem",
         background: "rgba(0,0,0,0.04)",
         border: "1px solid rgba(0,0,0,0.06)",
+        position: "relative", // anchor for overlay
+        overflow: "hidden", // avoid spill
       }}
     >
-      {formulaLines.map((line, idx) => (
-        <div className="fragment" key={idx} style={{ marginBottom: "0.35rem" }}>
-          <BlockMath math={line} />
-        </div>
-      ))}
+      {/* Phase 1: sum-over-cosets formulas (visible first, then fade out) */}
+      <div className="fragment fade-out" data-fragment-index="1">
+        {formulaLines.map((line, idx) => (
+          <div key={idx} style={{ marginBottom: "0.35rem" }}>
+            <BlockMath math={line} />
+          </div>
+        ))}
+      </div>
+
+      {/* Phase 2: Gaussian chart (fades in, overlaid on top) */}
+      <div
+        className="fragment fade-in"
+        data-fragment-index="1"
+        style={{
+          position: "absolute",
+          top: "1.4rem",
+          left: "1.4rem",
+          right: "1.4rem",
+          bottom: "1.4rem",
+        }}
+      >
+        <GaussianChartBlock />
+      </div>
     </div>
   );
 
@@ -417,7 +437,7 @@ function SecondPieces() {
     </div>
   );
 
-  const GaussianChartBlock = () => {
+  function GaussianChartBlock() {
     const chartRef = useRef(null);
 
     useEffect(() => {
@@ -479,6 +499,7 @@ function SecondPieces() {
         .line()
         .x((d) => xScale(d.x))
         .y((d) => yScale(d.y));
+
       GAUSSIAN_PARAMS.forEach((param, i) => {
         const data = xs.map((x) => ({
           x,
@@ -492,6 +513,7 @@ function SecondPieces() {
           .attr("stroke", param.color)
           .attr("stroke-width", 2)
           .attr("d", line);
+
         const totalLength = path.node().getTotalLength();
         path
           .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
@@ -544,38 +566,15 @@ function SecondPieces() {
         }}
       />
     );
-  };
-
-  const gaussianLeftBlock = (
-    <div
-      className="content is-size-4 has-text-left"
-      style={{
-        width: "100%",
-        padding: "1.4rem",
-        borderRadius: "0.75rem",
-        background: "rgba(0,0,0,0.04)",
-        border: "1px solid rgba(0,0,0,0.06)",
-      }}
-    >
-      <GaussianChartBlock />
-    </div>
-  );
+  }
 
   return (
-    <>
-      <SlideTemplate1
-        title="Larger CVPs, Wider Gaussian"
-        subtext="larger CVP in dual lattice enable more dual lattice points to be prepared"
-        blocks={[leftBlock, rightBlock]}
-      />
-      <SlideTemplate1
-        title="Gaussian curves with dual lattice playground"
-        subtext="Same dual lattice interactions alongside the Gaussian ρₛ(‖x‖) curves"
-        blocks={[gaussianLeftBlock, rightBlock]}
-      />
-    </>
+    <SlideTemplate1
+      title="Larger CVPs, Wider Gaussian"
+      subtext="Larger CVP range in the dual lattice lets us prepare more dual lattice points and wider Gaussians."
+      blocks={[leftBlock, rightBlock]}
+    />
   );
 }
 
 export default SecondPieces;
-

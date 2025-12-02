@@ -24,26 +24,36 @@ function ContributionsStatusQRT() {
         // ---------------- Left Block: contributions ----------------
         <div
           key="qrt-contributions"
-          className="content is-size-6 has-text-left"
+          className="content is-size-5 has-text-left"
           style={{
             ...contributionsStyles[0],
             fontSize: "0.95rem",
-            lineHeight: "1.35",
+            lineHeight: "1",
           }}
         >
           <h5 className="mb-3">Main Contributions</h5>
           <ul className="ml-4">
             <li>New QHT algorithm (LCU-based):</li>
             <ul className="ml-5">
-              <li>Quantum Hartley transform via linear combination of unitaries (LCU)</li>
+              <li>
+                Quantum Hartley transform via linear combination of unitaries
+                (LCU)
+              </li>
               <li>Avoids many costly conditional operations</li>
               <li>Leads to a more direct and compact QHT circuit</li>
             </ul>
-            <li style={{ marginTop: "0.75rem" }}>First Qiskit implementations:</li>
+            <li style={{ marginTop: "0.75rem" }}>
+              First Qiskit implementations:
+            </li>
             <ul className="ml-5">
-              <li>Full circuits for Type I-IV quantum cosine and sine transforms</li>
+              <li>
+                Full circuits for Type I-IV quantum cosine and sine transforms
+              </li>
               <li>Complete implementation of the new QHT</li>
-              <li>Ready-to-use building blocks for quantum signal and image processing</li>
+              <li>
+                Ready-to-use building blocks for quantum signal and image
+                processing
+              </li>
             </ul>
           </ul>
         </div>,
@@ -51,11 +61,11 @@ function ContributionsStatusQRT() {
         // ---------------- Right Block: status ----------------
         <div
           key="qrt-status"
-          className="content is-size-6 has-text-left"
+          className="content is-size-5 has-text-left"
           style={{
             ...contributionsStyles[1],
             fontSize: "0.95rem",
-            lineHeight: "1.35",
+            lineHeight: "1",
           }}
         >
           <h5 className="mb-3">Circuit Optimisations for NISQ</h5>
@@ -91,4 +101,3 @@ function ContributionsStatusQRT() {
 }
 
 export default ContributionsStatusQRT;
-

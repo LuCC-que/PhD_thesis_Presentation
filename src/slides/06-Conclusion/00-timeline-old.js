@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { SlideTemplate1 } from "../components/contentSlide1";
-import putTogetherPdf from "../../assets/pdf/put-together.pdf";
+import timelinePdf from "../../assets/pdf/timeline.pdf";
 
 const blockStyle = {
   width: "90%",
@@ -14,7 +14,7 @@ const PDFJS_SRC =
 const PDFJS_WORKER_SRC =
   "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs";
 
-function PutEverythingTogether() {
+function TimelineSlide() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [error, setError] = useState(null);
@@ -26,17 +26,17 @@ function PutEverythingTogether() {
         const pdfjs = await import(/* webpackIgnore: true */ PDFJS_SRC);
         pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_SRC;
 
-        const pdf = await pdfjs.getDocument(putTogetherPdf).promise;
+        const pdf = await pdfjs.getDocument(timelinePdf).promise;
         if (cancelled) return;
 
         const page = await pdf.getPage(1);
         if (cancelled) return;
 
-        // Fit to container width while rendering at device-pixel resolution
+        // Fit to container width while rendering at device-pixel resolution; shrink a bit to leave margin
         const containerWidth =
           containerRef.current?.clientWidth || window.innerWidth || 1200;
         const baseViewport = page.getViewport({ scale: 1 });
-        const scale = containerWidth / baseViewport.width;
+        const scale = (containerWidth * 0.8) / baseViewport.width;
         const viewport = page.getViewport({ scale });
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -68,16 +68,11 @@ function PutEverythingTogether() {
 
   return (
     <SlideTemplate1
-      title="Putting Everything Together"
-      subtext={
-        <>
-          DGS width tradeoff: wider on the dual lattice L* narrows on the primal
-          lattice L.
-        </>
-      }
+      title="Timeline"
+      subtext={<>Project milestones and roadmap</>}
       blocks={[
         <div
-          key="dgs-graph"
+          key="timeline-graph"
           className="content is-size-6 has-text-left"
           style={blockStyle}
           ref={containerRef}
@@ -105,4 +100,4 @@ function PutEverythingTogether() {
   );
 }
 
-export default PutEverythingTogether;
+export default TimelineSlide;

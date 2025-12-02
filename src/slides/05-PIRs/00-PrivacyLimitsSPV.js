@@ -25,7 +25,7 @@ function PrivacyLimitsSPV() {
         <div
           key="spv-overview"
           className="content is-size-5 has-text-left"
-          style={{ ...spvStyles[0], fontSize: "1.05rem" }}
+          style={{ ...spvStyles[0], fontSize: "1.05rem", lineHeight: "1" }}
         >
           <h6 className="mb-3">SPV in One Slide</h6>
           <ul className="ml-4">
@@ -58,7 +58,7 @@ function PrivacyLimitsSPV() {
         <div
           key="spv-privacy-gap"
           className="content is-size-5 has-text-left"
-          style={{ ...spvStyles[1], fontSize: "1.05rem" }}
+          style={{ ...spvStyles[1], fontSize: "1.05rem", lineHeight: "1" }}
         >
           <h6 className="mb-3">Privacy Leak and Method Gap</h6>
           <ul className="ml-4">

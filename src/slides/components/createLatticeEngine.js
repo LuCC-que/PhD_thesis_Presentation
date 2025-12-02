@@ -196,7 +196,8 @@ function createLatticeEngine(containerEl, options) {
     fundamental.selectAll("*").remove();
     if (!showFundamentalDomain) return;
     const space = fundamentalSpace === "dual" ? "dual" : "primal";
-    if ((space === "dual" && !showDual) || (space === "primal" && !showPrimal)) return;
+    if ((space === "dual" && !showDual) || (space === "primal" && !showPrimal))
+      return;
 
     const useBasis = getSpaceBasis(space);
     const v1 = useBasis.b1;
@@ -326,7 +327,11 @@ function createLatticeEngine(containerEl, options) {
     lineSel.exit().remove();
   }
 
-  function updateDualLattice(animated = false, duration = 0, fromOrigin = true) {
+  function updateDualLattice(
+    animated = false,
+    duration = 0,
+    fromOrigin = true
+  ) {
     const data = showDual ? latticeIndices : [];
     const color = resolvedDualPointColor;
     const pointSel = dualLattice
@@ -368,31 +373,34 @@ function createLatticeEngine(containerEl, options) {
           });
         }
 
-    if (enableModProjection) {
-      const modBasis = getSpaceBasis("dual");
-      const shortestVectors = computeShortestPrimitiveVectors(modBasis, POINT_RANGE);
-      const shortestLen = Math.sqrt(shortestVectors[0].len2);
-      const halfShortest = 0.5 * shortestLen;
-      const coeff1 = d.i / modProjectionDiv;
-      const coeff2 = d.j / modProjectionDiv;
-      const rawVec = [
-        coeff1 * modBasis.b1[0] + coeff2 * modBasis.b2[0],
-        coeff1 * modBasis.b1[1] + coeff2 * modBasis.b2[1],
-      ];
-      const distCoord = Math.hypot(rawVec[0], rawVec[1]);
-      const radiusCoord = cvpRadiusFactor * halfShortest;
-      if (distCoord <= radiusCoord) {
-        const reduced = reduceVectorModLattice(rawVec, modBasis);
-        const modVec = reduced.vec;
-        modVector = { vec: modVec, screen: vectorToScreen(modVec) };
-      } else {
-        modVector = null;
-      }
-      updateModVectorDisplay();
-      if (onModVectorComputed) {
-        onModVectorComputed(modVector ? modVector.vec : null);
-      }
-    }
+        if (enableModProjection) {
+          const modBasis = getSpaceBasis("dual");
+          const shortestVectors = computeShortestPrimitiveVectors(
+            modBasis,
+            POINT_RANGE
+          );
+          const shortestLen = Math.sqrt(shortestVectors[0].len2);
+          const halfShortest = 0.5 * shortestLen;
+          const coeff1 = d.i / modProjectionDiv;
+          const coeff2 = d.j / modProjectionDiv;
+          const rawVec = [
+            coeff1 * modBasis.b1[0] + coeff2 * modBasis.b2[0],
+            coeff1 * modBasis.b1[1] + coeff2 * modBasis.b2[1],
+          ];
+          const distCoord = Math.hypot(rawVec[0], rawVec[1]);
+          const radiusCoord = cvpRadiusFactor * halfShortest;
+          if (distCoord <= radiusCoord) {
+            const reduced = reduceVectorModLattice(rawVec, modBasis);
+            const modVec = reduced.vec;
+            modVector = { vec: modVec, screen: vectorToScreen(modVec) };
+          } else {
+            modVector = null;
+          }
+          updateModVectorDisplay();
+          if (onModVectorComputed) {
+            onModVectorComputed(modVector ? modVector.vec : null);
+          }
+        }
       });
 
     const merged = pointSel.merge(pointEnter);
@@ -512,12 +520,18 @@ function createLatticeEngine(containerEl, options) {
     }
 
     const useSpace = shortestSpace;
-    if ((useSpace === "primal" && !showPrimal) || (useSpace === "dual" && !showDual)) {
+    if (
+      (useSpace === "primal" && !showPrimal) ||
+      (useSpace === "dual" && !showDual)
+    ) {
       shortest.selectAll("*").remove();
       return;
     }
     const useBasis = getSpaceBasis(useSpace);
-    const shortestVectors = computeShortestPrimitiveVectors(useBasis, POINT_RANGE);
+    const shortestVectors = computeShortestPrimitiveVectors(
+      useBasis,
+      POINT_RANGE
+    );
     const targetSelection =
       useSpace === "dual"
         ? dualLattice.selectAll("circle.dual-point")
@@ -593,7 +607,10 @@ function createLatticeEngine(containerEl, options) {
 
     const useSpace = cvpSpace;
     const useBasis = getSpaceBasis(useSpace);
-    const shortestVectors = computeShortestPrimitiveVectors(useBasis, POINT_RANGE);
+    const shortestVectors = computeShortestPrimitiveVectors(
+      useBasis,
+      POINT_RANGE
+    );
     const shortestLen = Math.sqrt(shortestVectors[0].len2);
     const halfShortest = 0.5 * shortestLen;
     const halfShortestScreen = halfShortest * scale;
@@ -602,7 +619,8 @@ function createLatticeEngine(containerEl, options) {
     const overCap = radius > halfShortestScreen;
 
     const spaceHidden =
-      (useSpace === "primal" && !showPrimal) || (useSpace === "dual" && !showDual);
+      (useSpace === "primal" && !showPrimal) ||
+      (useSpace === "dual" && !showDual);
 
     const updateOriginCircle = () => {
       if (!showOriginCircle || spaceHidden) {
@@ -761,7 +779,9 @@ function createLatticeEngine(containerEl, options) {
     // Arrow from K_{L*}(x) (best) to x representing x'
     // Arrow/label for x' (optional)
     if (showCvpResidualArrow) {
-      const xPrimeArrowSel = cvp.selectAll("line.cvp-xprime-arrow").data([best]);
+      const xPrimeArrowSel = cvp
+        .selectAll("line.cvp-xprime-arrow")
+        .data([best]);
       const xPrimeArrowEnter = xPrimeArrowSel
         .enter()
         .append("line")
@@ -777,7 +797,9 @@ function createLatticeEngine(containerEl, options) {
         .attr("y2", cvpTarget.y);
       xPrimeArrowSel.exit().remove();
 
-      const xPrimeLabelSel = cvp.selectAll("text.cvp-xprime-label").data([best]);
+      const xPrimeLabelSel = cvp
+        .selectAll("text.cvp-xprime-label")
+        .data([best]);
       const xPrimeLabelEnter = xPrimeLabelSel
         .enter()
         .append("text")
@@ -822,7 +844,7 @@ function createLatticeEngine(containerEl, options) {
       .merge(kLabelEnter)
       .attr("x", best.x + 8)
       .attr("y", best.y - 6)
-      .text("K_{L*}(x)");
+      .text(String.raw`k(x)`);
     kLabelSel.exit().remove();
   }
 
@@ -858,7 +880,6 @@ function createLatticeEngine(containerEl, options) {
       .attr("fill", "#333")
       .text("mod P(L*)");
   }
-
 
   function layoutStatic(animated = false) {
     width = containerEl.clientWidth || 0;
@@ -1098,7 +1119,10 @@ function createLatticeEngine(containerEl, options) {
     setScale(newScale, duration = 600) {
       scale = newScale;
       if (modVector) {
-        modVector = { vec: modVector.vec, screen: vectorToScreen(modVector.vec) };
+        modVector = {
+          vec: modVector.vec,
+          screen: vectorToScreen(modVector.vec),
+        };
       }
 
       circles
