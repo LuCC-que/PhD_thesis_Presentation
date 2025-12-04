@@ -18,7 +18,7 @@ const altDistOverviewStyles = [
 function Overview_AltDists() {
   return (
     <SlideTemplate1
-      title="Fitting Alternative Noise Distributions into the DGS Framework"
+      title="Fitting Alternative Noise Distributions into DGS"
       subtext={
         <>
           Understanding which properties allow LWE oracles to behave like the
@@ -59,7 +59,9 @@ function Overview_AltDists() {
           style={altDistOverviewStyles[1]}
         >
           <ul className="ml-4">
-            <li>Review how the Gaussian-based LWE oracle interacts with CVP.</li>
+            <li>
+              Review how the Gaussian-based LWE oracle interacts with CVP.
+            </li>
             <li>
               Examine two candidate replacements:
               <ul className="ml-5">
@@ -79,4 +81,3 @@ function Overview_AltDists() {
 }
 
 export default Overview_AltDists;
-

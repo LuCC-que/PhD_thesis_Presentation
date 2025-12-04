@@ -8,8 +8,7 @@ import { BASIS_B, DEFAULT_SCALE } from "../components/latticeMath";
 import DraggablePanel from "../components/DraggablePanel";
 
 const phase1Lines = [
-  String.raw`x = \kappa_{L^*}(x) + x',\quad \kappa_{L^*}(x)\in L^*`,
-
+  String.raw`x = \kappa_{L^*}(x) + x', \kappa_{L^*}(x)\in L^*, v \leftarrow D_{L, r}`,
   String.raw`b := \langle x, v\rangle + e = \langle \kappa_{L^*}(x), v\rangle + \langle x', v\rangle + e`,
   String.raw`L^*s = \kappa_{L^*}(x),\quad La = v`,
   String.raw`b := \langle x, v\rangle + e = \langle a, s\rangle + \langle x', v\rangle + e`,
@@ -18,7 +17,7 @@ const phase1Lines = [
 ];
 
 const phase2Lines = [
-  String.raw`b = \langle a, s\rangle + \langle x', v\rangle + e,\quad v \leftarrow D_{L^*, r},\ e \leftarrow \Psi_{s}`,
+  String.raw`b = \langle a, s\rangle + \langle x', v\rangle + e,\ v \leftarrow D_{L, r}， e \leftarrow \Psi_{s}`,
   String.raw`\text{error}(x') := \langle x', v\rangle + e`,
   String.raw`\text{error}(x') \sim \Psi_{\beta},\quad \beta = \sqrt{(r\|x'\|)^2 + s^2}`,
   String.raw`\beta < \alpha\ \text{ means }\ \mathrm{LWE}_{p,\Psi_{\alpha}}\ \text{ oracle can decode it}`,
@@ -38,6 +37,9 @@ function FirstPieces() {
   const [cvpRadiusFactor, setCvpRadiusFactor] = useState(0.6);
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [scale, setScale] = useState(DEFAULT_SCALE);
+
+  const transitionFragment = phase1Lines.length; // when phase 1 fades out and phase 2 fades in
+  const phase2BaseFragment = transitionFragment; // first phase 2 line shows with the fade-in
 
   useEffect(() => {
     displayRef.current?.relayout(true);
@@ -66,9 +68,17 @@ function FirstPieces() {
       }}
     >
       {/* Phase 1: build LWE sample from CVP input (defines the height) */}
-      <div className="fragment fade-out" data-fragment-index="1">
+      <div
+        className="fragment fade-out"
+        data-fragment-index={transitionFragment}
+      >
         {phase1Lines.map((line, idx) => (
-          <div key={`p1-${idx}`} style={{ marginBottom: "0.3rem" }}>
+          <div
+            key={`p1-${idx}`}
+            className="fragment"
+            data-fragment-index={idx}
+            style={{ marginBottom: "0.3rem" }}
+          >
             <BlockMath math={line} />
           </div>
         ))}
@@ -77,7 +87,7 @@ function FirstPieces() {
       {/* Phase 2: overlays Phase 1 instead of pushing it down */}
       <div
         className="fragment fade-in"
-        data-fragment-index="1"
+        data-fragment-index={transitionFragment}
         style={{
           position: "absolute",
           top: "1.4rem", // align with card padding
@@ -86,7 +96,12 @@ function FirstPieces() {
         }}
       >
         {phase2Lines.map((line, idx) => (
-          <div key={`p2-${idx}`} style={{ marginBottom: "0.3rem" }}>
+          <div
+            key={`p2-${idx}`}
+            className="fragment"
+            data-fragment-index={phase2BaseFragment + idx}
+            style={{ marginBottom: "0.3rem" }}
+          >
             <BlockMath math={line} />
           </div>
         ))}

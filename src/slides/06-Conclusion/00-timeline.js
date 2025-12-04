@@ -108,19 +108,8 @@ function TimelineSlide() {
             }}
           >
             <thead>
-              {/* Row 1: Years */}
+              {/* Row 1: Years (no first column) */}
               <tr>
-                <th
-                  style={{
-                    width: "14%",
-                    backgroundColor: LABEL_BG,
-                    color: LABEL_TEXT,
-                    textAlign: "center",
-                    borderColor: LABEL_BG,
-                  }}
-                >
-                  Activity / Term
-                </th>
                 {years.map((year) => (
                   <th
                     key={year}
@@ -137,15 +126,8 @@ function TimelineSlide() {
                 ))}
               </tr>
 
-              {/* Row 2: Terms */}
+              {/* Row 2: Terms (no first column) */}
               <tr>
-                <th
-                  style={{
-                    backgroundColor: LABEL_BG,
-                    color: LABEL_TEXT,
-                    borderColor: LABEL_BG,
-                  }}
-                ></th>
                 {terms.map((t, idx) => (
                   <th
                     key={`${t.year}-${t.term}-${idx}`}
@@ -165,16 +147,7 @@ function TimelineSlide() {
             <tbody>
               {/* 1) Coursework + Poster + Seminars */}
               <tr>
-                <th
-                  style={{
-                    backgroundColor: LABEL_BG,
-                    color: LABEL_TEXT,
-                    borderColor: LABEL_BG,
-                    whiteSpace: "nowrap",
-                  }}
-                ></th>
                 {buildMultiSpanCells([
-                  // Coursework: 2023 Fall → 2024 Win
                   {
                     label: "Coursework",
                     startYear: 2023,
@@ -182,7 +155,6 @@ function TimelineSlide() {
                     endYear: 2024,
                     endTerm: "Win",
                   },
-                  // Poster: Fall 2024
                   {
                     label: "Poster",
                     startYear: 2024,
@@ -190,7 +162,6 @@ function TimelineSlide() {
                     endYear: 2024,
                     endTerm: "Fall",
                   },
-                  // Seminars: Fall 2025
                   {
                     label: "Seminars",
                     startYear: 2025,
@@ -203,14 +174,6 @@ function TimelineSlide() {
 
               {/* 2) Comp Exam I: 2025 Win to 2025 S/S */}
               <tr>
-                <th
-                  style={{
-                    backgroundColor: LABEL_BG,
-                    color: LABEL_TEXT,
-                    borderColor: LABEL_BG,
-                    whiteSpace: "nowrap",
-                  }}
-                ></th>
                 {buildMultiSpanCells([
                   {
                     label: "Comp Exam I",
@@ -224,14 +187,6 @@ function TimelineSlide() {
 
               {/* 3) Comp Exam II: 2025 Fall to 2026 Win */}
               <tr>
-                <th
-                  style={{
-                    backgroundColor: LABEL_BG,
-                    color: LABEL_TEXT,
-                    borderColor: LABEL_BG,
-                    whiteSpace: "nowrap",
-                  }}
-                ></th>
                 {buildMultiSpanCells([
                   {
                     label: "Comp Exam II",
@@ -243,16 +198,8 @@ function TimelineSlide() {
                 ])}
               </tr>
 
-              {/* 4) LWE Research: 2024 S/S to 2025 Win, LWE Continued: 2025 Fall to 2026 Fall */}
+              {/* 4) LWE Research + LWE Continued */}
               <tr>
-                <th
-                  style={{
-                    backgroundColor: LABEL_BG,
-                    color: LABEL_TEXT,
-                    borderColor: LABEL_BG,
-                    whiteSpace: "nowrap",
-                  }}
-                ></th>
                 {buildMultiSpanCells([
                   {
                     label: "LWE Research",
@@ -273,14 +220,6 @@ function TimelineSlide() {
 
               {/* 5) QRTlib Development & Graduation Preparation */}
               <tr>
-                <th
-                  style={{
-                    backgroundColor: LABEL_BG,
-                    color: LABEL_TEXT,
-                    borderColor: LABEL_BG,
-                    whiteSpace: "nowrap",
-                  }}
-                ></th>
                 {buildMultiSpanCells([
                   {
                     label: "QRTlib Development",
@@ -301,14 +240,6 @@ function TimelineSlide() {
 
               {/* 6) PIR + ZKP Framework: 2025 Fall to 2027 S/S */}
               <tr>
-                <th
-                  style={{
-                    backgroundColor: LABEL_BG,
-                    color: LABEL_TEXT,
-                    borderColor: LABEL_BG,
-                    whiteSpace: "nowrap",
-                  }}
-                ></th>
                 {buildMultiSpanCells([
                   {
                     label: "PIR + ZKP Framework",
@@ -322,14 +253,6 @@ function TimelineSlide() {
 
               {/* 7) Additional Research: 2026 Win to 2027 S/S */}
               <tr>
-                <th
-                  style={{
-                    backgroundColor: LABEL_BG,
-                    color: LABEL_TEXT,
-                    borderColor: LABEL_BG,
-                    whiteSpace: "nowrap",
-                  }}
-                ></th>
                 {buildMultiSpanCells([
                   {
                     label: "Additional Research",

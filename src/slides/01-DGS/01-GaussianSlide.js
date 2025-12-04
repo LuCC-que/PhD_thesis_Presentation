@@ -10,9 +10,9 @@ const LAYOUT = {
 };
 
 const AXIS = {
-  xLabel: "?x?",
-  yLabel: "??(?x?)",
-  titlePrefix: "Plot of ??(?x?) for s = ",
+  xLabel: "||x||",
+  yLabel: "Ï_s(||x||)", // or "rho_s(||x||)" if you prefer pure ASCII
+  titlePrefix: "Gaussian Ï_s(||x||) for s = ",
   yTicks: 5,
 };
 
@@ -167,6 +167,7 @@ function drawLegend(g, innerWidth) {
 
 function animateCurves(container, g) {
   const paths = g.selectAll("path.gaussian-curve");
+
   const run = () => {
     paths.each(function (_d, i) {
       const p = d3.select(this);
@@ -183,28 +184,33 @@ function animateCurves(container, g) {
     });
   };
 
-  const Reveal = window.Reveal;
-  let handler = null;
+  const sectionEl = container.closest("section");
+  if (!sectionEl) {
+    // No slide wrapper found â†’ just run once.
+    run();
+    return () => {};
+  }
 
-  if (Reveal && typeof Reveal.addEventListener === "function") {
-    const sectionEl = container.closest("section");
-    handler = (event) => {
-      if (event.currentSlide === sectionEl) {
-        run();
-      }
-    };
-    Reveal.addEventListener("slidechanged", handler);
-    if (Reveal.getCurrentSlide() === sectionEl) {
-      run();
-    }
-  } else {
+  // If this slide is already visible when mounted, run immediately.
+  if (sectionEl.classList.contains("present")) {
     run();
   }
 
-  return () => {
-    if (Reveal && handler) {
-      Reveal.removeEventListener("slidechanged", handler);
+  // Watch for class changes on the slide; Reveal toggles "present" on the active slide.
+  const observer = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.type === "attributes" && m.attributeName === "class") {
+        if (sectionEl.classList.contains("present")) {
+          run();
+        }
+      }
     }
+  });
+
+  observer.observe(sectionEl, { attributes: true });
+
+  return () => {
+    observer.disconnect();
   };
 }
 
@@ -236,30 +242,35 @@ function GaussianSlide() {
       title="Discrete Gaussian Sampling (DGS)"
       subtext={
         <>
-          {String.raw`The function $\rho_s(x)$ defines the Gaussian distribution over lattice points $D_{L+x,s}$.`}
-          {String.raw` Shorter lattice vectors receive higher probability mass than longer ones.`}
+          {String.raw`$\rho_s(x)$ is a Gaussian weight on $\mathbb{R}^n$, and $D_{L,s}$ is the corresponding discrete Gaussian on a lattice $L$.`}
         </>
       }
       blocks={[
         // ---- Block 0: intuition bullets ----
         <div
           key="gaussian-intuition"
-          className="content is-size-4 has-text-left"
+          className="content is-size-5 has-text-left"
           style={BLOCKS_STYLE[0]}
         >
+          <h6 className="title is-4 mb-2">Discrete Gaussian on a Lattice</h6>
           <ul className="ml-4">
             <li>
-              {String.raw`Each iteration samples from $D_{L + x, s}$ with a decreasing $s$, amplifying the probability of short vectors.`}
+              <li>
+                <span>{String.raw`The Gaussian function is defined by`}</span>
+                <span style={{ display: "block", marginTop: "0.25rem" }}>
+                  {String.raw`$\rho_s(x) = \exp\!\big(-\|x\|^2 / 2s^2\big)$ for $x \in \mathbb{R}^n$ and $s > 0$.`}
+                </span>
+              </li>
             </li>
             <li>
-              {String.raw`As $s$ becomes smaller, the distribution $\rho_s$ concentrates heavily around the shortest lattice vectors.`}
+              {String.raw`The discrete Gaussian on a lattice $L \subset \mathbb{R}^n$ is defined by`}
+              {String.raw` $D_{L,s}(y) = \rho_s(y)\big/\sum_{z \in L} \rho_s(z)$ for $y \in L$.`}
             </li>
             <li>
-              {String.raw`Eventually, samples land— with high probability— on the $i$-th shortest independent vector, giving an approximation to SIVP / Gap-SVP.`}
+              {String.raw`The parameter $s$ controls the width: larger $s$ spreads mass over many lattice points, while smaller $s$ concentrates mass near the origin and other short lattice vectors.`}
             </li>
           </ul>
         </div>,
-
         // ---- Block 1: chart ----
         <div
           key="dgs-image"
@@ -284,4 +295,3 @@ function GaussianSlide() {
 }
 
 export default GaussianSlide;
-

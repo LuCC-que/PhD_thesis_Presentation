@@ -22,57 +22,59 @@ function CauchyDistSlide() {
       subtext={<>Classically promising, quantumly problematic</>}
       blocks={[
         // ---------------- Left Block: classical framework ----------------
+        // ---------------- Left Block: classical framework ----------------
+        // ---------------- Left Block: classical framework ----------------
         <div
           key="cauchy-classical"
           className="content is-size-5 has-text-left"
-          style={{ ...cauchyStyles[0], fontSize: "1.05rem", lineHeight: "1.4" }}
+          style={{ ...cauchyStyles[0], fontSize: "1.05rem", lineHeight: "1.2" }}
         >
           <h5 className="mb-3">Classical Cauchy Framework</h5>
           <ul className="ml-4">
-            <li>{String.raw`$u$ isotropic multivariate Cauchy.`}</li>
+            <li>{String.raw`Setup: $u$ is an isotropic multivariate Cauchy.`}</li>
+
             <li style={{ marginTop: "0.75rem" }}>
-              {String.raw`Projection: $\langle x', u \rangle$ is 1D Cauchy (scaled).`}
+              {String.raw`Projection: for any $x'$, $\langle x', u \rangle$ is 1D Cauchy with a scaled width.`}
             </li>
-            <li style={{ marginTop: "0.75rem" }}>Hybrid model:</li>
+
+            <li style={{ marginTop: "0.75rem" }}>Hybrid noise model:</li>
             <ul className="ml-5">
-              <li>{String.raw`$X \sim F_{s,\Lambda+u}$ (discrete Cauchy)`}</li>
-              <li>{String.raw`$Y \sim P_t$ (continuous Cauchy)`}</li>
-              <li>{String.raw`$g$ = distribution of $X+Y$.`}</li>
+              <li>{String.raw`$X \sim F_{s,\Lambda+u}$ (discrete Cauchy on the lattice).`}</li>
+              <li>{String.raw`$Y \sim P_t$ (continuous Cauchy on $\mathbb{R}$).`}</li>
+              <li>{String.raw`$g$ is the distribution of $X+Y$.`}</li>
             </ul>
+
             <li style={{ marginTop: "0.75rem" }}>
-              {String.raw`For $s, t \ge \sqrt{2}\eta_\varepsilon$, we have $|g - P_{s+t}|_{L^1} \le 8\varepsilon$.`}
-            </li>
-            <li style={{ marginTop: "0.75rem" }}>
-              {String.raw`So discrete + continuous Cauchy $\approx$ continuous Cauchy, mirroring Gaussian smoothing.`}
+              {String.raw`Smoothing theorem (proved in our paper on Cauchy smoothing, submitted to Statistics and Probability Letters): if $s,t \ge \sqrt{2}\,\eta_\varepsilon$, then $\lVert g - P_{s+t}\rVert_{L_1} \le 8\varepsilon$.`}
             </li>
           </ul>
         </div>,
-
+        // ---------------- Right Block: quantum issue ----------------
         // ---------------- Right Block: quantum issue ----------------
         <div
           key="cauchy-quantum"
           className="content is-size-5 has-text-left"
-          style={{ ...cauchyStyles[1], fontSize: "1.05rem", lineHeight: "1.4" }}
+          style={{ ...cauchyStyles[1], fontSize: "1.05rem", lineHeight: "1.1" }}
         >
-          <h5 className="mb-3">Quantum Squaring Issue</h5>
+          <h5 className="mb-3">Quantum Squaring Obstruction</h5>
           <ul className="ml-4">
-            <li>{String.raw`Quantum sampling: probabilities $\propto f(x)^2$ (Born rule).`}</li>
+            <li>{String.raw`Quantum sampling uses probabilities $\propto |f(x)|^2$ (Born rule).`}</li>
+
             <li style={{ marginTop: "0.75rem" }}>
-              {String.raw`Gaussian: squaring keeps a Gaussian.`}
+              {String.raw`Gaussian: squaring keeps you inside the Gaussian family.`}
             </li>
+
             <li style={{ marginTop: "0.75rem" }}>
-              {String.raw`Cauchy: squaring kills heavy tails, giving a different law.`}
+              {String.raw`Cauchy: squaring destroys the heavy tails and changes the law.`}
             </li>
+
             <li style={{ marginTop: "0.75rem" }}>
-              {String.raw`Rejection sampling cannot repair the tails or envelope near 0.`}
+              {String.raw`Rejection tricks cannot restore true Cauchy tails or the correct shape near $0$.`}
             </li>
-            <li style={{ marginTop: "0.75rem" }}>Conclusion:</li>
-            <ul className="ml-5">
-              <li>{String.raw`Classically: Cauchy fits a DGS-style smoothing theory.`}</li>
-              <li>
-                {String.raw`Quantumly: amplitude-squared sampling cannot realise true Cauchy noise.`}
-              </li>
-            </ul>
+
+            <li style={{ marginTop: "0.75rem" }}>
+              {String.raw`So: classically Cauchy fits a DGS-style smoothing theory, but quantum amplitude-squared sampling cannot realise genuine Cauchy noise.`}
+            </li>
           </ul>
         </div>,
       ]}
@@ -81,4 +83,3 @@ function CauchyDistSlide() {
 }
 
 export default CauchyDistSlide;
-

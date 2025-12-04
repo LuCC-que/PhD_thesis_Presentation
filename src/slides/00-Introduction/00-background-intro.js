@@ -20,8 +20,8 @@ function BackgroundIntro() {
       title="Why Post-Quantum Cryptography?"
       subtext={
         <>
-          Quantum computers break classical cryptosystems; lattices offer secure
-          alternatives.
+          Quantum computers break today’s public-key crypto; lattices offer
+          quantum-safe alternatives.
         </>
       }
       blocks={[
@@ -31,25 +31,22 @@ function BackgroundIntro() {
           className="content is-size-4 has-text-left"
           style={pqcTwoBlockStyles[0]}
         >
+          <h4 className="title is-4 mb-3">Classical public-key cryptography</h4>
           <ul className="ml-4">
             <li>
-              Cryptography protects communication, signatures, and blockchain
-              interactions.
+              Cryptography secures messages, signatures, and blockchain
+              transactions.
             </li>
-
             <li>
-              Classical schemes—RSA, Diffie–Hellman, ECC—rely on factoring and
-              discrete log problems.
+              Classical schemes (RSA, Diffie–Hellman, ECC) rely on factoring and
+              discrete logarithms.
             </li>
-
             <li>
-              Shor’s algorithm solves these number-theoretic problems
-              efficiently on a quantum computer.
+              Shor’s algorithm solves these problems efficiently on a large
+              quantum computer.
             </li>
-
             <li>
-              Post-quantum cryptography is required to remain secure in a
-              quantum era.
+              We need post-quantum schemes to stay secure in the quantum era.
             </li>
           </ul>
         </div>,
@@ -60,20 +57,19 @@ function BackgroundIntro() {
           className="content is-size-4 has-text-left"
           style={pqcTwoBlockStyles[1]}
         >
+          <h4 className="title is-4 mb-3">Lattice-based cryptography</h4>
           <ul className="ml-4">
             <li>
-              Lattice-based cryptography replaces number theory with
-              high-dimensional geometry.
+              Lattice-based cryptography uses high-dimensional geometry instead
+              of number theory.
             </li>
-
             <li>
-              Key problems include SVP and CVP, believed to be hard even for
-              quantum algorithms.
+              Core problems such as SVP and CVP are believed hard even for
+              quantum computers.
             </li>
-
             <li>
-              Lattice assumptions support encryption, digital signatures, key
-              exchange, and homomorphic encryption.
+              These assumptions support encryption, signatures, key exchange,
+              and homomorphic encryption.
             </li>
           </ul>
         </div>,
@@ -83,4 +79,3 @@ function BackgroundIntro() {
 }
 
 export default BackgroundIntro;
-

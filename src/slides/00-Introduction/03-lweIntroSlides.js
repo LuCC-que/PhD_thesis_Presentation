@@ -43,7 +43,7 @@ function LWEIntroSlides() {
                   {String.raw`Choose a secret vector $\vec{s} \in \mathbb{Z}_q^n$.`}
                 </li>
                 <li className="fragment">
-                  {String.raw`Let $\psi_\alpha$ be a noise distribution over $\mathbb{Z}$ (e.g., a discrete Gaussian).`}
+                  {String.raw`Let $\psi_\alpha$ be a noise distribution over $\mathbb{Z}$ (e.g., a continuous Gaussian).`}
                 </li>
                 <li className="fragment">
                   {String.raw`For each sample, draw $\vec{a}_i \gets \mathbb{Z}_q^n$ uniformly.`}

@@ -25,13 +25,17 @@ function Recap_AltDists() {
         <div
           key="gaussian-core-expression"
           className="content is-size-5 has-text-left"
-          style={{ ...gaussianOracleStyles[0], fontSize: "1.05rem", lineHeight: "1.4" }}
+          style={{
+            ...gaussianOracleStyles[0],
+            fontSize: "1.05rem",
+            lineHeight: "1.4",
+          }}
         >
           <ul className="ml-4">
             <li>
               {String.raw`Start from the LWE-style term $\langle x', v \rangle + e$ where`}
               <ul className="ml-5">
-                <li>{String.raw`$v$: discrete sample from $L^*$`}</li>
+                <li>{String.raw`$v$: discrete sample from $D_{L, r}$`}</li>
                 <li>{String.raw`$e$: continuous Gaussian noise`}</li>
               </ul>
             </li>
@@ -54,19 +58,23 @@ function Recap_AltDists() {
         <div
           key="gaussian-why-works"
           className="content is-size-5 has-text-left"
-          style={{ ...gaussianOracleStyles[1], fontSize: "1.05rem", lineHeight: "1.4" }}
+          style={{
+            ...gaussianOracleStyles[1],
+            fontSize: "1.05rem",
+            lineHeight: "1.4",
+          }}
         >
           <ol className="ml-4">
-            <li>
-              {String.raw`Stability under projection: the projection of a multivariate noise vector onto $x'$ must stay in the same family (up to scaling).`}
-              <div className="ml-4">
-                {String.raw`This keeps $\langle x', h \rangle$ analytically manageable.`}
-              </div>
-            </li>
             <li style={{ marginTop: "0.75rem" }}>
               {String.raw`Closure under convolution (smoothing): adding a discrete and a continuous version must give (almost) a continuous one of the same type.`}
               <div className="ml-4">
                 {String.raw`This lets $v + h$ behave like ideal continuous noise and keeps the LWE oracle well-defined.`}
+              </div>
+            </li>
+            <li>
+              {String.raw`Stability under projection: the projection of a multivariate noise vector onto $x'$ must stay in the same family (up to scaling).`}
+              <div className="ml-4">
+                {String.raw`This keeps $\langle x', h \rangle$ analytically manageable.`}
               </div>
             </li>
           </ol>
@@ -80,4 +88,3 @@ function Recap_AltDists() {
 }
 
 export default Recap_AltDists;
-
