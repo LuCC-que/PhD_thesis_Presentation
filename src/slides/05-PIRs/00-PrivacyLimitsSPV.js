@@ -19,7 +19,12 @@ function PrivacyLimitsSPV() {
   return (
     <SlideTemplate1
       title="Privacy Limits of Today's SPV Clients"
-      subtext={<>Why current SPV is lightweight but not private</>}
+      subtext={
+        <>
+          Why current Simplified Payment Verification is lightweight but not
+          private
+        </>
+      }
       blocks={[
         // ---------------- Left Block: SPV overview ----------------
         <div
@@ -27,7 +32,7 @@ function PrivacyLimitsSPV() {
           className="content is-size-5 has-text-left"
           style={{ ...spvStyles[0], fontSize: "1.05rem", lineHeight: "1" }}
         >
-          <h6 className="mb-3">SPV in One Slide</h6>
+          <h6 className="mb-3">Simplified Payment Verification(SPV)</h6>
           <ul className="ml-4">
             <li>Full node vs SPV</li>
             <ul className="ml-5">
@@ -68,10 +73,7 @@ function PrivacyLimitsSPV() {
                 SPV queries "my addresses / my UTXOs" - full nodes learn which
                 addresses belong to the user.
               </li>
-              <li>
-                Bloom filters (BIP-37), Tor: either weak privacy or high
-                overhead.
-              </li>
+              <li>Bloom filters (BIP-37), Neutrino filters (BIP-157)</li>
             </ul>
 
             <li>PIR and ZKP, but misaligned</li>

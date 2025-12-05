@@ -80,18 +80,18 @@ function ContributionsStatusQRT() {
           </h5>
           <ul className="ml-4">
             <li>All algorithms and circuits implemented and verified</li>
+
             <li style={{ marginTop: "0.75rem" }}>
               Code released as an open-source GitHub repository
             </li>
+
             <li style={{ marginTop: "0.75rem" }}>
               Theoretical framework and experimental evaluation completed
             </li>
+
             <li style={{ marginTop: "0.75rem" }}>
-              Paper submitted to Quantum and under peer review
-            </li>
-            <li style={{ marginTop: "0.75rem" }}>
-              QRTlib forms a first unified, accessible library of quantum real
-              transforms for future algorithms and applications
+              Paper <em>QRTlib: A Library for Fast Quantum Real Transforms</em>{" "}
+              submitted to <em>Quantum</em> and under peer review
             </li>
           </ul>
         </div>,

@@ -7,7 +7,7 @@ const QRTLib = () => {
   return (
     <section>
       <Background_QRTlib />
-      <ClassicalGapQRT />
+      {/* <ClassicalGapQRT /> */}
       <ExistingTransformsQRT />
       <ContributionsStatusQRT />
     </section>

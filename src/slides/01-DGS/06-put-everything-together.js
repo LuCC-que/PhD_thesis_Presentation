@@ -71,8 +71,7 @@ function PutEverythingTogether() {
       title="Putting Everything Together"
       subtext={
         <>
-          DGS width tradeoff: wider on the dual lattice L* narrows on the primal
-          lattice L.
+          {String.raw`We can find the $n$-th shortest independent vectors in $S_{2n}$ with probability $99.99\ldots 9\%$.`}
         </>
       }
       blocks={[

@@ -28,7 +28,7 @@ function ExistingTransformsQRT() {
           style={{
             ...existingTransformsStyles[0],
             fontSize: "1.05rem",
-            lineHeight: "1.4",
+            lineHeight: "1.2",
           }}
         >
           <h5 className="mb-3">Prior Work</h5>
@@ -41,8 +41,13 @@ function ExistingTransformsQRT() {
             <li style={{ marginTop: "0.75rem" }}>Follow-up research:</li>
             <ul className="ml-5">
               <li>Applied these transforms in quantum signal processing</li>
-              <li>Improved circuits, especially for the quantum Hartley transform (QHT)</li>
-              <li>Used recursive and self-similar structures to lower gate counts</li>
+              <li>
+                Improved circuits, especially for the quantum Hartley transform
+                (QHT)
+              </li>
+              <li>
+                Used recursive and self-similar structures to lower gate counts
+              </li>
             </ul>
           </ul>
         </div>,
@@ -54,7 +59,7 @@ function ExistingTransformsQRT() {
           style={{
             ...existingTransformsStyles[1],
             fontSize: "1.05rem",
-            lineHeight: "1.4",
+            lineHeight: "1.2",
           }}
         >
           <h5 className="mb-3">Key Limitations Before QRTlib</h5>
@@ -64,14 +69,17 @@ function ExistingTransformsQRT() {
               <li>No full Qiskit library for QCT/QST/QHT</li>
               <li>Hard for others to test, reuse, or benchmark</li>
             </ul>
-            <li style={{ marginTop: "0.75rem" }}>Heavy multi-controlled operations:</li>
+            <li style={{ marginTop: "0.75rem" }}>
+              Heavy multi-controlled operations:
+            </li>
             <ul className="ml-5">
               <li>Circuits rely on large multi-controlled gates</li>
               <li>High depth and noise sensitivity</li>
               <li>Impractical for near-term (NISQ) hardware</li>
             </ul>
             <li style={{ marginTop: "0.75rem" }}>
-              Result: useful theory, but no accessible, hardware-aware library. QRTlib addresses this gap.
+              Result: useful theory, but no accessible, hardware-aware library.
+              QRTlib addresses this gap.
             </li>
           </ul>
         </div>,
@@ -81,4 +89,3 @@ function ExistingTransformsQRT() {
 }
 
 export default ExistingTransformsQRT;
-

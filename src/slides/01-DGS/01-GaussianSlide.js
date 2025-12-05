@@ -10,9 +10,9 @@ const LAYOUT = {
 };
 
 const AXIS = {
-  xLabel: "||x||",
-  yLabel: "ρ_s(||x||)", // or "rho_s(||x||)" if you prefer pure ASCII
-  titlePrefix: "Gaussian ρ_s(||x||) for s = ",
+  xLabel: "‖x‖",
+  yLabel: "ρₛ(‖x‖)", // or "rho_s(||x||)" if you prefer pure ASCII
+  titlePrefix: "Gaussian ρₛ(‖x‖) for s = ",
   yTicks: 5,
 };
 
@@ -258,7 +258,7 @@ function GaussianSlide() {
               <li>
                 <span>{String.raw`The Gaussian function is defined by`}</span>
                 <span style={{ display: "block", marginTop: "0.25rem" }}>
-                  {String.raw`$\rho_s(x) = \exp\!\big(-\|x\|^2 / 2s^2\big)$ for $x \in \mathbb{R}^n$ and $s > 0$.`}
+                  {String.raw`$\rho_s(x) = \exp\!\big(-\frac{\|x\|^2}{2s^2}\big)$ for $x \in \mathbb{R}^n$ and $s > 0$.`}
                 </span>
               </li>
             </li>

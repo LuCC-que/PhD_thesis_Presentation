@@ -25,7 +25,11 @@ function Background_QRTlib() {
         <div
           key="qrtlib-what"
           className="content is-size-5 has-text-left"
-          style={{ ...qrtBackgroundStyles[0], fontSize: "1.05rem", lineHeight: "1.4" }}
+          style={{
+            ...qrtBackgroundStyles[0],
+            fontSize: "1.05rem",
+            lineHeight: "1.4",
+          }}
         >
           <h5 className="mb-3">What QRTlib Is</h5>
           <ul className="ml-4">
@@ -50,7 +54,11 @@ function Background_QRTlib() {
         <div
           key="qrtlib-why"
           className="content is-size-5 has-text-left"
-          style={{ ...qrtBackgroundStyles[1], fontSize: "1.05rem", lineHeight: "1.4" }}
+          style={{
+            ...qrtBackgroundStyles[1],
+            fontSize: "1.05rem",
+            lineHeight: "1.4",
+          }}
         >
           <h5 className="mb-3">Why It Matters</h5>
           <ul className="ml-4">
@@ -61,8 +69,8 @@ function Background_QRTlib() {
               <li>real-valued signal and image processing</li>
             </ul>
             <li style={{ marginTop: "0.75rem" }}>
-              In quantum computing, we have the QFT but no standard, practical
-              counterparts for these real transforms.
+              Quantum Fourier Transform (QFT) is well studied, but real-valued
+              transforms have received less attention.
             </li>
             <li style={{ marginTop: "0.75rem" }}>
               QRTlib aims to fill this gap and enable quantum-native versions of
@@ -76,4 +84,3 @@ function Background_QRTlib() {
 }
 
 export default Background_QRTlib;
-

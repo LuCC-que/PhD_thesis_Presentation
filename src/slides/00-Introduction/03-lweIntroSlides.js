@@ -106,7 +106,7 @@ function LWEIntroSlides() {
                   {String.raw`Goal: given $(A,\vec{b})$, recover the hidden secret $\vec{s}$.`}
                 </li>
                 <li className="fragment">
-                  {String.raw`If $\vec{e} = \vec{0}$, solving is easy linear algebra; with small noise, the problem is believed hard (via lattice reductions).`}
+                  {String.raw`If $\vec{e} = \vec{0}$, solving is easy linear algebra; with small noise, the problem is as hard as SIVP (via DGS reductions).`}
                 </li>
               </ul>
             </div>,

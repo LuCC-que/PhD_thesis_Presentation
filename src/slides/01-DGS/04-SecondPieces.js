@@ -453,7 +453,7 @@ function SecondPieces() {
         { s: 1.0, color: "green" },
         { s: 0.5, color: "blue" },
       ];
-      const AXIS = { xLabel: "‖x‖", yLabel: "ρₛ(‖x‖)" };
+      const AXIS = { xLabel: "‖l‖", yLabel: "ρₛ(‖l‖)" };
 
       const container = chartRef.current;
       if (!container) return undefined;
