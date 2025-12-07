@@ -12,8 +12,8 @@ function Title() {
             padding: 50,
           }}
         >
-          <span>Alternative Distributions for</span>
-          <br />
+          <span>Alternative Distributions</span>
+          <span> for </span>
           <span>Learning With Errors Cryptography</span>
         </h1>
       </section>
