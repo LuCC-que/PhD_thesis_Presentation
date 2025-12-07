@@ -11,9 +11,9 @@ function DGS() {
       <Overview_DGS />
       <GaussianSlide />
       <DGSin3Pieces />
-      <FirstPieces />
+      {/* <FirstPieces />
       <SecondPieces />
-      <FourierTransformLink />
+      <FourierTransformLink /> */}
       <PutEverythingTogether />
     </section>
   );

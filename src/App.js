@@ -13,6 +13,12 @@ import QRTLib from "./slides/04-QRTlib/QRTlib";
 import PIR from "./slides/05-PIRs/PIR";
 import Conclusion from "./slides/06-Conclusion/conclusion";
 
+import FirstPieces from "./slides/01-DGS/03-FirstPieces";
+import SecondPieces from "./slides/01-DGS/04-SecondPieces";
+import FourierTransformLink from "./slides/01-DGS/05-Fourier-transform";
+
+const BASE_SLIDE_HEIGHT = 720; // keep content sizing consistent while adapting width to the viewport
+
 function App() {
   const deckDivRef = useRef(null);
   const deckRef = useRef(null);
@@ -24,14 +30,27 @@ function App() {
     const container = deckDivRef.current;
     if (!container) return;
 
+    const computeSlideSize = () => {
+      const viewportHeight = window.innerHeight || BASE_SLIDE_HEIGHT;
+      const viewportWidth = window.innerWidth || 1280;
+      const aspectRatio = viewportWidth / Math.max(viewportHeight, 1);
+
+      return {
+        width: Math.round(BASE_SLIDE_HEIGHT * aspectRatio),
+        height: BASE_SLIDE_HEIGHT,
+      };
+    };
+
+    const initialSize = computeSlideSize();
+
     const deck = new Reveal(container, {
       hash: true,
       transition: "slide",
       slideNumber: "c/t",
 
-      // Fixed slide size (16:9)
-      width: 1280,
-      height: 720,
+      // Base slide height with responsive width (fills viewport on different aspect ratios)
+      width: initialSize.width,
+      height: initialSize.height,
 
       // No extra margin around slides
       margin: 0,
@@ -63,9 +82,23 @@ function App() {
 
     deckRef.current = deck;
 
-    deck.initialize().catch(console.error);
+    const handleResize = () => {
+      const deckInstance = deckRef.current;
+      if (!deckInstance) return;
+      const nextSize = computeSlideSize();
+      deckInstance.configure(nextSize);
+      deckInstance.layout();
+    };
+
+    deck
+      .initialize()
+      .then(handleResize)
+      .catch(console.error);
+
+    window.addEventListener("resize", handleResize);
 
     return () => {
+      window.removeEventListener("resize", handleResize);
       if (deckRef.current) {
         deckRef.current.destroy();
         deckRef.current = null;
@@ -83,6 +116,11 @@ function App() {
         <QRTLib />
         <PIR />
         <Conclusion />
+        <section>
+          <FirstPieces />
+          <SecondPieces />
+          <FourierTransformLink />
+        </section>
       </div>
     </div>
   );
