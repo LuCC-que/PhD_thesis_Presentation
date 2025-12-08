@@ -53,18 +53,15 @@ function FutureAltDists() {
           className="content is-size-5 has-text-left"
           style={{ ...futureStyles[1], fontSize: "1.05rem", lineHeight: "1.4" }}
         >
-          <h5 className="mb-3">Next Steps: Laplace and Metrics</h5>
+          <h5 className="mb-3">Next Steps: Isotropic Laplace and Metrics</h5>
           <ul className="ml-4">
-            <li>Next target: Laplace distribution as noise.</li>
+            <li>Next target: Isotropic Laplace distribution as noise.</li>
             <li style={{ marginTop: "0.75rem" }}>
               {String.raw`Start again from $\langle x, v \rangle + e$ with $v$ discrete on $\Lambda$, $e$ continuous.`}
             </li>
             <li style={{ marginTop: "0.75rem" }}>
-              Compare continuous and discrete version using:
-              <ul className="ml-5">
-                <li>Total variation distance</li>
-                <li>Wasserstein distance</li>
-              </ul>
+              Compare continuous and discrete version using methods like Total
+              variation distance
             </li>
             <li style={{ marginTop: "0.75rem" }}>
               Goal: numerical and analytic criteria for when adding continuous

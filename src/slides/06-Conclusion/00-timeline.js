@@ -239,7 +239,7 @@ function TimelineSlide() {
               </tr>
 
               {/* 6) PIR + ZKP Framework: 2025 Fall to 2027 S/S */}
-              <tr>
+              {/* <tr>
                 {buildMultiSpanCells([
                   {
                     label: "PIR + ZKP Framework",
@@ -249,7 +249,7 @@ function TimelineSlide() {
                     endTerm: "S/S",
                   },
                 ])}
-              </tr>
+              </tr> */}
 
               {/* 7) Additional Research: 2026 Win to 2027 S/S */}
               <tr>

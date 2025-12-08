@@ -26,7 +26,7 @@ function TableOfContents() {
           <ul
             style={{ listStylePosition: "inside", paddingLeft: 0, margin: 0 }}
           >
-            <li>Introduction</li>
+            <li>LWE Problem and Cryptography</li>
             <li>Discrete Gaussian Sampling (DGS)</li>
             <li>Alternative Noise Distributions</li>
             <li>QRTlib: Quantum Real Transforms</li>
