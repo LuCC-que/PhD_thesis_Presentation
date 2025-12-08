@@ -60,7 +60,7 @@ function FutureAltDists() {
               {String.raw`Start again from $\langle x, v \rangle + e$ with $v$ discrete on $\Lambda$, $e$ continuous.`}
             </li>
             <li style={{ marginTop: "0.75rem" }}>
-              Compare continuous $f(x)$ and discrete $g(x)$ using:
+              Compare continuous and discrete version using:
               <ul className="ml-5">
                 <li>Total variation distance</li>
                 <li>Wasserstein distance</li>
@@ -80,4 +80,3 @@ function FutureAltDists() {
 }
 
 export default FutureAltDists;
-

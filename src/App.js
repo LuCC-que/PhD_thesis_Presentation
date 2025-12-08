@@ -6,6 +6,7 @@ import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/black.css";
 
 import Title from "./slides/titlePages";
+import TableOfContents from "./slides/tableOfContents";
 import Introduction from "./slides/00-Introduction/introduction";
 import DGS from "./slides/01-DGS/DGS";
 import Alt_Dists from "./slides/03-Alt-DISTs/Alt-Dists";
@@ -90,10 +91,7 @@ function App() {
       deckInstance.layout();
     };
 
-    deck
-      .initialize()
-      .then(handleResize)
-      .catch(console.error);
+    deck.initialize().then(handleResize).catch(console.error);
 
     window.addEventListener("resize", handleResize);
 
@@ -110,11 +108,12 @@ function App() {
     <div className="reveal" ref={deckDivRef}>
       <div className="slides">
         <Title />
+        <TableOfContents />
         <Introduction />
         <DGS />
         <Alt_Dists />
         <QRTLib />
-        <PIR />
+        {/* <PIR /> */}
         <Conclusion />
         <section>
           <FirstPieces />

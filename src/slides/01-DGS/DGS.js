@@ -5,6 +5,7 @@ import FirstPieces from "./03-FirstPieces";
 import SecondPieces from "./04-SecondPieces";
 import FourierTransformLink from "./05-Fourier-transform";
 import PutEverythingTogether from "./06-put-everything-together";
+import GaussianChallenges from "./07-Gaussians-Challenges";
 function DGS() {
   return (
     <section>
@@ -15,6 +16,7 @@ function DGS() {
       <SecondPieces />
       <FourierTransformLink /> */}
       <PutEverythingTogether />
+      <GaussianChallenges />
     </section>
   );
 }

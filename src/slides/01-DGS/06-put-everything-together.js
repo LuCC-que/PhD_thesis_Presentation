@@ -71,7 +71,7 @@ function PutEverythingTogether() {
       title="Putting Everything Together"
       subtext={
         <>
-          {String.raw`We can find the $n$-th shortest independent vectors in $S_{2n}$ with probability $99.99\ldots 9\%$.`}
+          {String.raw`We can find the $n$-th shortest independent vectors in $S_{2n}$ with very high probability`}
         </>
       }
       blocks={[

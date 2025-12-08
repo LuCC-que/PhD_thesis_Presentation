@@ -81,4 +81,3 @@ export function SlideTemplate1({ title, subtext, blocks }) {
     </section>
   );
 }
-

@@ -18,7 +18,7 @@ const qrtBackgroundStyles = [
 function Background_QRTlib() {
   return (
     <SlideTemplate1
-      title="QRTlib: Quantum Real Transforms Library"
+      title="A quantum computing project: QRTlib"
       subtext={<>Quantum versions of cosine, sine, and Hartley transforms</>}
       blocks={[
         // ---------------- Left Block: what QRTlib is ----------------
