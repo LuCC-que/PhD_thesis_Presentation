@@ -70,7 +70,7 @@ function GaussianChallenges() {
             <li>
               Security intuition: they are computationally indistinguishable
             </li>
-            <li>These optimizations pair naturally with RLWE and MLWE:</li>
+            <li>These optimizations has deployed in RLWE and MLWE:</li>
             <ul className="ml-5">
               <li>{String.raw`use rings/modules instead of $\mathbb{Z}_q^n$`}</li>
               <li>efficient via NTT and bit-based noise</li>
@@ -80,7 +80,7 @@ function GaussianChallenges() {
             </li>
             <ul className="ml-5">
               <li>
-                {String.raw`standard LWE $\rightarrow$ worst–case on general lattices)`}
+                {String.raw`standard LWE $\rightarrow$ worst–case on general lattices`}
               </li>
               <li>
                 {String.raw`RLWE / MLWE $\rightarrow$ worst–case on ideal or module lattices`}
