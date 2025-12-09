@@ -74,7 +74,7 @@ function Recap_AltDists() {
             <li>
               {String.raw`Stability under projection: the projection of a multivariate noise vector onto $x'$ must stay in the same family (up to scaling).`}
               <div className="ml-4">
-                {String.raw`This keeps $\langle x', h \rangle$ analytically manageable.`}
+                {String.raw`This keeps $\langle x', v + h \rangle$ stays inside the same distribution family.`}
               </div>
             </li>
           </ol>

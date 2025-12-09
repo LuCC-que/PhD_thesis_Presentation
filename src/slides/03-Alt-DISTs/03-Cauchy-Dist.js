@@ -59,7 +59,7 @@ function CauchyDistSlide() {
           style={{ ...cauchyStyles[1], fontSize: "1.05rem", lineHeight: "1.1" }}
         >
           <p className="mb-2">
-            Our paper <em>The Smoothing Theory of the Cauchy Distribution</em>{" "}
+            Our paper <em>The Smoothing Theorem of the Cauchy Distribution</em>{" "}
             is submitted to <em>Statistics &amp; Probability Letters</em>.
           </p>
           <br />
