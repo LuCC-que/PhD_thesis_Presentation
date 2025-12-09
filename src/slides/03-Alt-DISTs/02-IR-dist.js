@@ -65,7 +65,7 @@ function IR_DistSlide() {
               {String.raw`In the Gaussian case, adding discrete and continuous noise yields (almost) a continuous Gaussian with a larger parameter: $v + h \approx \text{continuous Gaussian}$.`}
             </li>
             <li style={{ marginTop: "0.75rem" }}>
-              {String.raw`For Irwin-Hall, there is no smoothing theorem and no proof that $v + h$, with $v$ discrete Irwin-Hall and $h$ continuous Irwin-Hall, is close to any continuous Irwin-Hall law.`}
+              {String.raw`For Irwin-Hall, there is no smoothing theorem and no proof that $v + h$, with $v$ discrete Irwin-Hall and $h$ continuous Irwin-Hall, is close to any continuous Irwin-Hall distribution.`}
             </li>
             <li style={{ marginTop: "0.75rem" }}>
               {String.raw`We cannot show that $\langle x', v \rangle + e = \langle x', v + h \rangle$ stays inside the same distribution family.`}
@@ -81,4 +81,3 @@ function IR_DistSlide() {
 }
 
 export default IR_DistSlide;
-
