@@ -62,7 +62,7 @@ function IR_DistSlide() {
         >
           <ul className="ml-4">
             <li>
-              {String.raw`In the Gaussian case, adding discrete and continuous noise yields (almost) a continuous Gaussian with a larger parameter: $v + h \approx \text{continuous Gaussian}$.`}
+              {String.raw`In the Gaussian case, adding discrete and continuous noise yields (almost) a continuous Gaussian with a larger width: $v + h \approx \text{continuous Gaussian}$.`}
             </li>
             <li style={{ marginTop: "0.75rem" }}>
               {String.raw`For Irwin-Hall, there is no smoothing theorem and no proof that $v + h$, with $v$ discrete Irwin-Hall and $h$ continuous Irwin-Hall, is close to any continuous Irwin-Hall distribution.`}
