@@ -20,7 +20,7 @@ export function SlideTemplate1({ title, subtext, blocks }) {
             }}
           >
             <h1
-              className="title is-size-1 mb-0 has-text-centered"
+              className="title is-size-2 mb-0 has-text-centered"
               style={{ color: "white" }}
             >
               {title}
